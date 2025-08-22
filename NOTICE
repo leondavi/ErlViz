@@ -1,0 +1,25 @@
+NOTICE - ErlViz
+
+This product includes software developed by David Leon (leondavi).
+
+ErlViz
+Copyright (c) 2025 David Leon (leondavi)
+
+This project uses the following open source dependencies:
+
+- PySide6: Qt for Python, Licensed under LGPL/GPL
+- Graphviz: Graph visualization software, Licensed under EPL
+- Matplotlib: Python plotting library, Licensed under PSF
+- NetworkX: Network analysis library, Licensed under BSD
+- GitPython: Git repository interface, Licensed under BSD
+- Markdown: Markdown parser, Licensed under BSD
+- Requests: HTTP library, Licensed under Apache 2.0
+- Pygments: Syntax highlighting, Licensed under BSD
+- BeautifulSoup4: HTML/XML parser, Licensed under MIT
+- LXML: XML/HTML parser, Licensed under BSD
+- Jinja2: Template engine, Licensed under BSD
+- Plotly: Interactive graphing, Licensed under MIT
+- PyYAML: YAML parser, Licensed under MIT
+
+All dependencies retain their original licenses and copyrights.
+See individual package documentation for detailed license information.

@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "erlviz"
+version = "1.0.0"
+authors = [
+    {name = "David Leon", email = "leondavi@github.com"},
+]
+description = "ErlViz - Erlang Project Analyzer and Visualizer"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Environment :: X11 Applications :: Qt",
+    "Topic :: Documentation",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Topic :: Text Processing :: Markup :: Markdown",
+]
+keywords = [
+    "erlang", "otp", "visualization", "documentation", "analysis",
+    "graphviz", "dependency", "behavior", "nif", "cowboy", "gen_server"
+]
+dependencies = [
+    "PySide6>=6.5.0",
+    "GitPython>=3.1.0",
+    "markdown>=3.4.0",
+    "graphviz>=0.20.0",
+    "networkx>=3.1.0",
+    "matplotlib>=3.7.0",
+    "requests>=2.31.0",
+    "pygments>=2.17.0",
+    "PyYAML>=6.0.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
+    "pathlib2>=2.3.0",
+    "jinja2>=3.1.0",
+    "plotly>=5.15.0",
+    "pydot>=1.4.0",
+    "python-magic>=0.4.27",
+]
+license = {text = "MIT"}
+
+[project.urls]
+"Homepage" = "https://github.com/leondavi/ErlViz"
+"Bug Tracker" = "https://github.com/leondavi/ErlViz/issues"
+"Documentation" = "https://github.com/leondavi/ErlViz/blob/master/README.md"
+"Source Code" = "https://github.com/leondavi/ErlViz"
+
+[project.scripts]
+erlviz = "main:main"
+erlviz-gui = "main:run_gui"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "flake8>=5.0.0",
+    "mypy>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["erlviz*"]
+
+[tool.setuptools.package-data]
+erlviz = ["*.md", "*.txt"]
