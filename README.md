@@ -1,6 +1,6 @@
 # ErlViz - Erlang Project Analyzer and Visualizer
 
-ErlViz is a comprehensive Python-based tool that analyzes Erlang/OTP projects to generate dependency graphs, communication diagrams, and documentation. It's designed to be the "Doxygen for Erlang" - providing deep insights into OTP behaviors, module dependencies, and communication patterns.
+ErlViz is a comprehensive Python-based tool that analyzes Erlang/OTP projects to generate dependency graphs, communication diagrams, and documentation. Providing deep insights into OTP behaviors, module dependencies, and communication patterns.
 
 ## Features
 
