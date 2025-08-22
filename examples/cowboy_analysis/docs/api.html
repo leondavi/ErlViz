@@ -1,0 +1,2701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api - ErlViz Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #bdc3c7;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="api-reference">API Reference</h1>
+<p>Public API functions in this project:</p>
+<h2 id="cowboy">cowboy</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions">Exported Functions</h3>
+<h4 id="get_env2"><code>get_env/2</code></h4>
+<hr />
+<h4 id="get_env3"><code>get_env/3</code></h4>
+<hr />
+<h4 id="log2"><code>log/2</code></h4>
+<p><strong>Arguments</strong>: <code>Level, Format, Args, _</code></p>
+<p><strong>Description</strong>: We use error_logger by default. Because error_logger does
+%% not have all the levels we accept we have to do some
+%% mapping to error_logger functions.</p>
+<hr />
+<h4 id="log4"><code>log/4</code></h4>
+<p><strong>Arguments</strong>: <code>Level, Format, Args, _</code></p>
+<p><strong>Description</strong>: We use error_logger by default. Because error_logger does
+%% not have all the levels we accept we have to do some
+%% mapping to error_logger functions.</p>
+<hr />
+<h4 id="set_env3"><code>set_env/3</code></h4>
+<hr />
+<h4 id="start_clear3"><code>start_clear/3</code></h4>
+<p><strong>Arguments</strong>: <code>Ref, TransOpts0, ProtoOpts0</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy).</p>
+<p>-export([start_clear/3]).
+-export([start_tls/3]).
+-export([start_quic/3]).
+-export([stop_listener/1]).
+-export([get_env/2]).
+-export([get_env/3]).
+-export([set_env/3]).</p>
+<p>%% Internal.
+-export([log/2]).
+-export([log/4]).</p>
+<p>%% Don't warn about the bad quicer specs.
+-dialyzer([{nowarn_function, start_quic/3}]).</p>
+<p>-type opts() :: cowboy_http:opts() | cowboy_http2:opts().
+-export_type([opts/0]).</p>
+<p>-type fields() :: [atom()
+    | {atom(), cowboy_constraints:constraint() | [cowboy_constraints:constraint()]}
+    | {atom(), cowboy_constraints:constraint() | [cowboy_constraints:constraint()], any()}].
+-export_type([fields/0]).</p>
+<p>-type http_headers() :: #{binary() =&gt; iodata()}.
+-export_type([http_headers/0]).</p>
+<p>-type http_status() :: non_neg_integer() | binary().
+-export_type([http_status/0]).</p>
+<p>-type http_version() :: 'HTTP/2' | 'HTTP/1.1' | 'HTTP/1.0'.
+-export_type([http_version/0]).</p>
+<p>-spec start_clear(ranch:ref(), ranch:opts(), opts())
+    -&gt; {ok, pid()} | {error, any()}.</p>
+<hr />
+<h4 id="start_quic3"><code>start_quic/3</code></h4>
+<p><strong>Arguments</strong>: <code>Ref, TransOpts, ProtoOpts</code></p>
+<p><strong>Description</strong>: @todo Experimental function to start a barebone QUIC listener.
+%%       This will need to be reworked to be closer to Ranch
+%%       listeners and provide equivalent features.
+%%
+%% @todo Better type for transport options. Might require fixing quicer types.</p>
+<p>-spec start_quic(ranch:ref(), #{socket_opts =&gt; [{atom(), _}]}, cowboy_http3:opts())
+    -&gt; {ok, pid()}.</p>
+<p>%% @todo Implement dynamic_buffer for HTTP/3 if/when it applies.</p>
+<hr />
+<h4 id="start_tls3"><code>start_tls/3</code></h4>
+<hr />
+<h4 id="stop_listener1"><code>stop_listener/1</code></h4>
+<hr />
+<h2 id="cowboy_app">cowboy_app</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_1">Exported Functions</h3>
+<h4 id="start2"><code>start/2</code></h4>
+<p><strong>Arguments</strong>: <code>_, _</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_app).
+-behaviour(application).</p>
+<p>-export([start/2]).
+-export([stop/1]).</p>
+<p>-spec start(<em>, </em>) -&gt; {ok, pid()}.</p>
+<hr />
+<h4 id="stop1"><code>stop/1</code></h4>
+<hr />
+<h2 id="cowboy_bstr">cowboy_bstr</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_2">Exported Functions</h3>
+<h4 id="capitalize_token1"><code>capitalize_token/1</code></h4>
+<p><strong>Arguments</strong>: <code>B</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_bstr).</p>
+<p>%% Binary strings.
+-export([capitalize_token/1]).
+-export([to_lower/1]).
+-export([to_upper/1]).</p>
+<p>%% Characters.
+-export([char_to_lower/1]).
+-export([char_to_upper/1]).</p>
+<p>%% The first letter and all letters after a dash are capitalized.
+%% This is the form seen for header names in the HTTP/1.1 RFC and
+%% others. Note that using this form isn't required, as header names
+%% are case insensitive, and it is only provided for use with eventual
+%% badly implemented clients.
+-spec capitalize_token(B) -&gt; B when B::binary().</p>
+<hr />
+<h4 id="char_to_lower1"><code>char_to_lower/1</code></h4>
+<hr />
+<h4 id="char_to_upper1"><code>char_to_upper/1</code></h4>
+<hr />
+<h4 id="to_lower1"><code>to_lower/1</code></h4>
+<hr />
+<h4 id="to_upper1"><code>to_upper/1</code></h4>
+<hr />
+<h2 id="cowboy_children">cowboy_children</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_3">Exported Functions</h3>
+<h4 id="down2"><code>down/2</code></h4>
+<hr />
+<h4 id="handle_supervisor_call4"><code>handle_supervisor_call/4</code></h4>
+<p><strong>Arguments</strong>: <code>_, {From, Tag}, _, _</code></p>
+<p><strong>Description</strong>: All other calls refer to children. We act in a similar way
+%% to a simple_one_for_one so we never find those.</p>
+<hr />
+<h4 id="init0"><code>init/0</code></h4>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_children).</p>
+<p>-export([init/0]).
+-export([up/4]).
+-export([down/2]).
+-export([shutdown/2]).
+-export([shutdown_timeout/3]).
+-export([terminate/1]).
+-export([handle_supervisor_call/4]).</p>
+<p>-record(child, {
+    pid :: pid(),
+    streamid :: cowboy_stream:streamid() | undefined,
+    shutdown :: timeout(),
+    timer = undefined :: undefined | reference()
+}).</p>
+<p>-type children() :: [#child{}].
+-export_type([children/0]).</p>
+<p>-spec init() -&gt; [].</p>
+<hr />
+<h4 id="shutdown2"><code>shutdown/2</code></h4>
+<p><strong>Arguments</strong>: <code>Children0, StreamID</code></p>
+<p><strong>Description</strong>: We ask the processes to shutdown first. This gives
+%% a chance to processes that are trapping exits to
+%% shut down gracefully. Others will exit immediately.
+%%
+%% @todo We currently fire one timer per process being
+%% shut down. This is probably not the most efficient.
+%% A more efficient solution could be to maintain a
+%% single timer and decrease the shutdown time of all
+%% processes when it fires. This is however much more
+%% complex, and there aren't that many processes that
+%% will need to be shutdown through this function, so
+%% this is left for later.
+-spec shutdown(Children, cowboy_stream:streamid())
+    -&gt; Children when Children::children().</p>
+<hr />
+<h4 id="shutdown_timeout3"><code>shutdown_timeout/3</code></h4>
+<hr />
+<h4 id="terminate1"><code>terminate/1</code></h4>
+<hr />
+<h4 id="up4"><code>up/4</code></h4>
+<hr />
+<h2 id="cowboy_clear">cowboy_clear</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_4">Exported Functions</h3>
+<h4 id="connection_process4"><code>connection_process/4</code></h4>
+<hr />
+<h4 id="start_link3"><code>start_link/3</code></h4>
+<p><strong>Arguments</strong>: <code>Ref, Transport, Opts</code></p>
+<p><strong>Description</strong>: Ranch 2.
+-spec start_link(ranch:ref(), module(), cowboy:opts()) -&gt; {ok, pid()}.</p>
+<hr />
+<h4 id="start_link4"><code>start_link/4</code></h4>
+<p><strong>Arguments</strong>: <code>Ref, Transport, Opts</code></p>
+<p><strong>Description</strong>: Ranch 2.
+-spec start_link(ranch:ref(), module(), cowboy:opts()) -&gt; {ok, pid()}.</p>
+<hr />
+<h2 id="cowboy_clock">cowboy_clock</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_5">Exported Functions</h3>
+<h4 id="code_change3"><code>code_change/3</code></h4>
+<hr />
+<h4 id="handle_call3"><code>handle_call/3</code></h4>
+<hr />
+<h4 id="handle_cast2"><code>handle_cast/2</code></h4>
+<hr />
+<h4 id="handle_info2"><code>handle_info/2</code></h4>
+<p><strong>Arguments</strong>: <code>_Info, State</code></p>
+<p><strong>Description</strong>: Cancel the timer in case an external process sent an update message.
+    _ = erlang:cancel_timer(TRef0, [{async, true}, {info, false}]),
+    T = erlang:universaltime(),
+    B2 = update_rfc1123(B1, Prev, T),
+    ets:insert(?MODULE, {rfc1123, B2}),
+    TRef = erlang:send_after(1000, self(), update),
+    {noreply, #state{universaltime=T, rfc1123=B2, tref=TRef}};</p>
+<hr />
+<h4 id="init1"><code>init/1</code></h4>
+<p><strong>Arguments</strong>: <code>[]</code></p>
+<p><strong>Description</strong>: gen_server.</p>
+<p>-spec init([]) -&gt; {ok, #state{}}.</p>
+<hr />
+<h4 id="rfc11230"><code>rfc1123/0</code></h4>
+<p><strong>Description</strong>: When the ets table doesn't exist, either because of a bug
+%% or because Cowboy is being restarted, we perform in a
+%% slightly degraded state and build a new timestamp for
+%% every request.
+-spec rfc1123() -&gt; binary().</p>
+<hr />
+<h4 id="rfc11231"><code>rfc1123/1</code></h4>
+<p><strong>Description</strong>: When the ets table doesn't exist, either because of a bug
+%% or because Cowboy is being restarted, we perform in a
+%% slightly degraded state and build a new timestamp for
+%% every request.
+-spec rfc1123() -&gt; binary().</p>
+<hr />
+<h4 id="start_link0"><code>start_link/0</code></h4>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>%% While a gen_server process runs in the background to update
+%% the cache of formatted dates every second, all API calls are
+%% local and directly read from the ETS cache table, providing
+%% fast time and date computations.
+-module(cowboy_clock).
+-behaviour(gen_server).</p>
+<p>%% API.
+-export([start_link/0]).
+-export([stop/0]).
+-export([rfc1123/0]).
+-export([rfc1123/1]).</p>
+<p>%% gen_server.
+-export([init/1]).
+-export([handle_call/3]).
+-export([handle_cast/2]).
+-export([handle_info/2]).
+-export([terminate/2]).
+-export([code_change/3]).</p>
+<p>-record(state, {
+    universaltime = undefined :: undefined | calendar:datetime(),
+    rfc1123 = &lt;&lt;&gt;&gt; :: binary(),
+    tref = undefined :: undefined | reference()
+}).</p>
+<p>%% API.</p>
+<p>-spec start_link() -&gt; {ok, pid()}.</p>
+<hr />
+<h4 id="stop0"><code>stop/0</code></h4>
+<hr />
+<h4 id="terminate2"><code>terminate/2</code></h4>
+<hr />
+<h2 id="cowboy_compress_h">cowboy_compress_h</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_6">Exported Functions</h3>
+<h4 id="data4"><code>data/4</code></h4>
+<hr />
+<h4 id="early_error5"><code>early_error/5</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Reason, PartialReq, Resp, Opts</code></p>
+<p><strong>Description</strong>: Clean the zlib:stream() in case something went wrong.
+    %% In the normal scenario the stream is already closed.
+    case Z of
+        undefined -&gt; ok;
+        _ -&gt; zlib:close(Z)
+    end,
+    cowboy_stream:terminate(StreamID, Reason, Next).</p>
+<p>-spec early_error(cowboy_stream:streamid(), cowboy_stream:reason(),
+    cowboy_stream:partial_req(), Resp, cowboy:opts()) -&gt; Resp
+    when Resp::cowboy_stream:resp_command().</p>
+<hr />
+<h4 id="info3"><code>info/3</code></h4>
+<hr />
+<h4 id="init3"><code>init/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Req, Opts</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_compress_h).
+-behavior(cowboy_stream).</p>
+<p>-export([init/3]).
+-export([data/4]).
+-export([info/3]).
+-export([terminate/3]).
+-export([early_error/5]).</p>
+<p>-record(state, {
+    next :: any(),
+    threshold :: non_neg_integer() | undefined,
+    compress = undefined :: undefined | gzip,
+    deflate = undefined :: undefined | zlib:zstream(),
+    deflate_flush = sync :: none | sync
+}).</p>
+<p>-spec init(cowboy_stream:streamid(), cowboy_req:req(), cowboy:opts())
+    -&gt; {cowboy_stream:commands(), #state{}}.</p>
+<hr />
+<h4 id="terminate3"><code>terminate/3</code></h4>
+<hr />
+<h2 id="cowboy_constraints">cowboy_constraints</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_7">Exported Functions</h3>
+<h4 id="format_error1"><code>format_error/1</code></h4>
+<hr />
+<h4 id="reverse2"><code>reverse/2</code></h4>
+<hr />
+<h4 id="validate2"><code>validate/2</code></h4>
+<p><strong>Arguments</strong>: <code>Value, Constraints) when is_list(Constraints</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_constraints).</p>
+<p>-export([validate/2]).
+-export([reverse/2]).
+-export([format_error/1]).</p>
+<p>-type constraint() :: int | nonempty | fun().
+-export_type([constraint/0]).</p>
+<p>-type reason() :: {constraint(), any(), any()}.
+-export_type([reason/0]).</p>
+<p>-spec validate(binary(), constraint() | [constraint()])
+    -&gt; {ok, any()} | {error, reason()}.</p>
+<hr />
+<h2 id="cowboy_decompress_h">cowboy_decompress_h</h2>
+<p>Copyright (c) jdamanalo <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#111;&#115;&#104;&#117;&#97;&#100;&#97;&#118;&#105;&#100;&#46;&#97;&#103;&#117;&#115;&#116;&#105;&#110;&#64;&#109;&#97;&#110;&#97;&#108;&#111;&#46;&#112;&#104;">&#106;&#111;&#115;&#104;&#117;&#97;&#100;&#97;&#118;&#105;&#100;&#46;&#97;&#103;&#117;&#115;&#116;&#105;&#110;&#64;&#109;&#97;&#110;&#97;&#108;&#111;&#46;&#112;&#104;</a>
+Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</p>
+<h3 id="exported-functions_8">Exported Functions</h3>
+<h4 id="data4_1"><code>data/4</code></h4>
+<hr />
+<h4 id="early_error5_1"><code>early_error/5</code></h4>
+<hr />
+<h4 id="info3_1"><code>info/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Info, State=#state{next=Next0}</code></p>
+<p><strong>Description</strong>: We can't change the enabled setting after we start reading,
+    %% otherwise the data becomes garbage. Changing the setting
+    %% is not treated as an error, it is just ignored.
+    State = case IsReading of
+        true -&gt; State0;
+        false -&gt; State0#state{enabled=Enabled}
+    end,
+    fold(Commands, State#state{next=Next, ratio_limit=RatioLimit});</p>
+<hr />
+<h4 id="init3_1"><code>init/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Req0, Opts</code></p>
+<p><strong>Description</strong>: Copyright (c) jdamanalo <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#111;&#115;&#104;&#117;&#97;&#100;&#97;&#118;&#105;&#100;&#46;&#97;&#103;&#117;&#115;&#116;&#105;&#110;&#64;&#109;&#97;&#110;&#97;&#108;&#111;&#46;&#112;&#104;">&#106;&#111;&#115;&#104;&#117;&#97;&#100;&#97;&#118;&#105;&#100;&#46;&#97;&#103;&#117;&#115;&#116;&#105;&#110;&#64;&#109;&#97;&#110;&#97;&#108;&#111;&#46;&#112;&#104;</a>
+%% Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_decompress_h).
+-behavior(cowboy_stream).</p>
+<p>-export([init/3]).
+-export([data/4]).
+-export([info/3]).
+-export([terminate/3]).
+-export([early_error/5]).</p>
+<p>-record(state, {
+    next :: any(),
+    enabled = true :: boolean(),
+    ratio_limit :: non_neg_integer() | undefined,
+    compress = undefined :: undefined | gzip,
+    inflate = undefined :: undefined | zlib:zstream(),
+    is_reading = false :: boolean(),</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% We use a list of binaries to avoid doing unnecessary</span>
+<span class="c">%% memory allocations when inflating. We convert to binary</span>
+<span class="c">%% when we propagate the data. The data must be reversed</span>
+<span class="c">%% before converting to binary or inflating: this is done</span>
+<span class="c">%% via the buffer_to_binary/buffer_to_iovec functions.</span>
+<span class="n">read_body_buffer</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="p">[</span><span class="nb">binary</span><span class="p">()],</span>
+<span class="n">read_body_is_fin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">nofin</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">nofin</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="n">fin</span><span class="p">,</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p">()}</span>
+</code></pre></div>
+
+<p>}).</p>
+<p>-spec init(cowboy_stream:streamid(), cowboy_req:req(), cowboy:opts())
+    -&gt; {cowboy_stream:commands(), #state{}}.</p>
+<hr />
+<h4 id="terminate3_1"><code>terminate/3</code></h4>
+<hr />
+<h2 id="cowboy_handler">cowboy_handler</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_9">Exported Functions</h3>
+<h4 id="execute2"><code>execute/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, Env=#{handler := Handler, handler_opts := HandlerOpts}</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>%% Handler middleware.
+%%
+%% Execute the handler given by the <em>handler</em> and <em>handler_opts</em>
+%% environment values. The result of this execution is added to the
+%% environment under the <em>result</em> value.
+-module(cowboy_handler).
+-behaviour(cowboy_middleware).</p>
+<p>-export([execute/2]).
+-export([terminate/4]).</p>
+<p>-callback init(Req, any())
+    -&gt; {ok | module(), Req, any()}
+    | {module(), Req, any(), any()}
+    when Req::cowboy_req:req().</p>
+<p>-callback terminate(any(), map(), any()) -&gt; ok.
+-optional_callbacks([terminate/3]).</p>
+<p>-spec execute(Req, Env) -&gt; {ok, Req, Env}
+    when Req::cowboy_req:req(), Env::cowboy_middleware:env().</p>
+<hr />
+<h4 id="terminate4"><code>terminate/4</code></h4>
+<hr />
+<h2 id="cowboy_http">cowboy_http</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_10">Exported Functions</h3>
+<h4 id="init6"><code>init/6</code></h4>
+<p><strong>Arguments</strong>: <code>Parent, Ref, Socket, Transport, ProxyHeader, Opts</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>%% @todo Worth renaming to cowboy_http1.
+%% @todo Change use of cow_http to cow_http1 where appropriate.
+-module(cowboy_http).</p>
+<p>-export([init/6]).
+-export([loop/1]).</p>
+<p>-export([system_continue/3]).
+-export([system_terminate/4]).
+-export([system_code_change/4]).</p>
+<p>-type opts() :: #{
+    active_n =&gt; pos_integer(),
+    alpn_default_protocol =&gt; http | http2,
+    chunked =&gt; boolean(),
+    compress_buffering =&gt; boolean(),
+    compress_threshold =&gt; non_neg_integer(),
+    connection_type =&gt; worker | supervisor,
+    dynamic_buffer =&gt; false | {pos_integer(), pos_integer()},
+    dynamic_buffer_initial_average =&gt; non_neg_integer(),
+    dynamic_buffer_initial_size =&gt; pos_integer(),
+    env =&gt; cowboy_middleware:env(),
+    hibernate =&gt; boolean(),
+    http10_keepalive =&gt; boolean(),
+    idle_timeout =&gt; timeout(),
+    inactivity_timeout =&gt; timeout(),
+    initial_stream_flow_size =&gt; non_neg_integer(),
+    linger_timeout =&gt; timeout(),
+    logger =&gt; module(),
+    max_authority_length =&gt; non_neg_integer(),
+    max_empty_lines =&gt; non_neg_integer(),
+    max_header_name_length =&gt; non_neg_integer(),
+    max_header_value_length =&gt; non_neg_integer(),
+    max_headers =&gt; non_neg_integer(),
+    max_keepalive =&gt; non_neg_integer(),
+    max_method_length =&gt; non_neg_integer(),
+    max_request_line_length =&gt; non_neg_integer(),
+    metrics_callback =&gt; cowboy_metrics_h:metrics_callback(),
+    metrics_req_filter =&gt; fun((cowboy_req:req()) -&gt; map()),
+    metrics_resp_headers_filter =&gt; fun((cowboy:http_headers()) -&gt; cowboy:http_headers()),
+    middlewares =&gt; [module()],
+    protocols =&gt; [http | http2],
+    proxy_header =&gt; boolean(),
+    request_timeout =&gt; timeout(),
+    reset_idle_timeout_on_send =&gt; boolean(),
+    sendfile =&gt; boolean(),
+    shutdown_timeout =&gt; timeout(),
+    stream_handlers =&gt; [module()],
+    tracer_callback =&gt; cowboy_tracer_h:tracer_callback(),
+    tracer_flags =&gt; [atom()],
+    tracer_match_specs =&gt; cowboy_tracer_h:tracer_match_specs(),
+    %% Open ended because configured stream handlers might add options.
+    _ =&gt; _
+}.
+-export_type([opts/0]).</p>
+<p>-record(ps_request_line, {
+    empty_lines = 0 :: non_neg_integer()
+}).</p>
+<p>-record(ps_header, {
+    method = undefined :: binary(),
+    authority = undefined :: binary() | undefined,
+    path = undefined :: binary(),
+    qs = undefined :: binary(),
+    version = undefined :: cowboy:http_version(),
+    headers = undefined :: cowboy:http_headers() | undefined,
+    name = undefined :: binary() | undefined
+}).</p>
+<p>-record(ps_body, {
+    length :: non_neg_integer() | undefined,
+    received = 0 :: non_neg_integer(),
+    transfer_decode_fun :: fun((binary(), cow_http_te:state()) -&gt; cow_http_te:decode_ret()),
+    transfer_decode_state :: cow_http_te:state()
+}).</p>
+<p>-record(stream, {
+    id = undefined :: cowboy_stream:streamid(),
+    %% Stream handlers and their state.
+    state = undefined :: {module(), any()},
+    %% Request method.
+    method = undefined :: binary(),
+    %% Client HTTP version for this stream.
+    version = undefined :: cowboy:http_version(),
+    %% Unparsed te header. Used to know if we can send trailers.
+    te :: undefined | binary(),
+    %% Expected body size.
+    local_expected_size = undefined :: undefined | non_neg_integer(),
+    %% Sent body size.
+    local_sent_size = 0 :: non_neg_integer(),
+    %% Commands queued.
+    queue = [] :: cowboy_stream:commands()
+}).</p>
+<p>-type stream() :: #stream{}.</p>
+<p>-record(state, {
+    parent :: pid(),
+    ref :: ranch:ref(),
+    socket :: inet:socket(),
+    transport :: module(),
+    proxy_header :: undefined | ranch_proxy_header:proxy_info(),
+    opts = #{} :: cowboy:opts(),
+    buffer = &lt;&lt;&gt;&gt; :: binary(),</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% Some options may be overriden for the current stream.</span>
+<span class="n">overriden_opts</span><span class="w"> </span><span class="p">=</span><span class="w"> </span>#<span class="p">{}</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">cowboy</span><span class="p">:</span><span class="n">opts</span><span class="p">(),</span>
+
+<span class="c">%% Remote address and port for the connection.</span>
+<span class="n">peer</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="p">{</span><span class="n">inet</span><span class="p">:</span><span class="n">ip_address</span><span class="p">(),</span><span class="w"> </span><span class="n">inet</span><span class="p">:</span><span class="n">port_number</span><span class="p">()},</span>
+
+<span class="c">%% Local address and port for the connection.</span>
+<span class="n">sock</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="p">{</span><span class="n">inet</span><span class="p">:</span><span class="n">ip_address</span><span class="p">(),</span><span class="w"> </span><span class="n">inet</span><span class="p">:</span><span class="n">port_number</span><span class="p">()},</span>
+
+<span class="c">%% Client certificate (TLS only).</span>
+<span class="n">cert</span><span class="w"> </span><span class="s">::</span><span class="w"> </span><span class="s">undefined</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">binary</span><span class="p">(),</span>
+
+<span class="nb">timer</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">reference</span><span class="p">(),</span>
+
+<span class="c">%% Whether we are currently receiving data from the socket.</span>
+<span class="n">active</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">boolean</span><span class="p">(),</span>
+
+<span class="c">%% Identifier for the stream currently being read (or waiting to be received).</span>
+<span class="n">in_streamid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">pos_integer</span><span class="p">(),</span>
+
+<span class="c">%% Parsing state for the current stream or stream-to-be.</span>
+<span class="n">in_state</span><span class="w"> </span><span class="p">=</span><span class="w"> </span>#<span class="n">ps_request_line</span><span class="p">{}</span><span class="w"> </span><span class="p">::</span><span class="w"> </span>#<span class="n">ps_request_line</span><span class="p">{}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span>#<span class="n">ps_header</span><span class="p">{}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span>#<span class="n">ps_body</span><span class="p">{},</span>
+
+<span class="c">%% Flow requested for the current stream.</span>
+<span class="nb">flow</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">infinity</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">infinity</span><span class="p">,</span>
+
+<span class="c">%% Dynamic buffer moving average and current buffer size.</span>
+<span class="n">dynamic_buffer_size</span><span class="w"> </span><span class="s">::</span><span class="w"> </span><span class="s">pos_integer()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span>
+<span class="n">dynamic_buffer_moving_average</span><span class="w"> </span><span class="s">::</span><span class="w"> </span><span class="s">non_neg_integer(),</span>
+
+<span class="c">%% Identifier for the stream currently being written.</span>
+<span class="c">%% Note that out_streamid =&lt; in_streamid.</span>
+<span class="n">out_streamid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">pos_integer</span><span class="p">(),</span>
+
+<span class="c">%% Whether we finished writing data for the current stream.</span>
+<span class="n">out_state</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">wait</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="nb">wait</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">chunked</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">streaming</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">done</span><span class="p">,</span>
+
+<span class="c">%% The connection will be closed after this stream.</span>
+<span class="n">last_streamid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">pos_integer</span><span class="p">(),</span>
+
+<span class="c">%% Currently active HTTP/1.1 streams.</span>
+<span class="n">streams</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="p">[</span><span class="n">stream</span><span class="p">()],</span>
+
+<span class="c">%% Children processes created by streams.</span>
+<span class="n">children</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">cowboy_children</span><span class="p">:</span><span class="n">init</span><span class="p">()</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">cowboy_children</span><span class="p">:</span><span class="n">children</span><span class="p">()</span>
+</code></pre></div>
+
+<p>}).</p>
+<p>-include_lib("cowlib/include/cow_inline.hrl").
+-include_lib("cowlib/include/cow_parse.hrl").</p>
+<p>-spec init(pid(), ranch:ref(), inet:socket(), module(),
+    ranch_proxy_header:proxy_info(), cowboy:opts()) -&gt; ok.</p>
+<hr />
+<h4 id="loop1"><code>loop/1</code></h4>
+<hr />
+<h4 id="system_code_change4"><code>system_code_change/4</code></h4>
+<hr />
+<h4 id="system_continue3"><code>system_continue/3</code></h4>
+<p><strong>Arguments</strong>: <code>_, _, State</code></p>
+<p><strong>Description</strong>: System callbacks.</p>
+<p>-spec system_continue(<em>, </em>, #state{}) -&gt; ok.</p>
+<hr />
+<h4 id="system_terminate4"><code>system_terminate/4</code></h4>
+<hr />
+<h2 id="cowboy_http2">cowboy_http2</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_11">Exported Functions</h3>
+<h4 id="init10"><code>init/10</code></h4>
+<p><strong>Arguments</strong>: <code>Parent, Ref, Socket, Transport, ProxyHeader, Opts, Peer, Sock, Cert, Buffer,
+        _Settings, Req=#{method := Method}</code></p>
+<p><strong>Description</strong>: @todo Add an argument for the request body.
+-spec init(pid(), ranch:ref(), inet:socket(), module(),
+    ranch_proxy_header:proxy_info() | undefined, cowboy:opts(),
+    {inet:ip_address(), inet:port_number()}, {inet:ip_address(), inet:port_number()},
+    binary() | undefined, binary(), map() | undefined, cowboy_req:req()) -&gt; no_return().</p>
+<hr />
+<h4 id="init12"><code>init/12</code></h4>
+<p><strong>Arguments</strong>: <code>Parent, Ref, Socket, Transport, ProxyHeader, Opts, Peer, Sock, Cert, Buffer,
+        _Settings, Req=#{method := Method}</code></p>
+<p><strong>Description</strong>: @todo Add an argument for the request body.
+-spec init(pid(), ranch:ref(), inet:socket(), module(),
+    ranch_proxy_header:proxy_info() | undefined, cowboy:opts(),
+    {inet:ip_address(), inet:port_number()}, {inet:ip_address(), inet:port_number()},
+    binary() | undefined, binary(), map() | undefined, cowboy_req:req()) -&gt; no_return().</p>
+<hr />
+<h4 id="init6_1"><code>init/6</code></h4>
+<p><strong>Arguments</strong>: <code>Parent, Ref, Socket, Transport, ProxyHeader, Opts, Peer, Sock, Cert, Buffer,
+        _Settings, Req=#{method := Method}</code></p>
+<p><strong>Description</strong>: @todo Add an argument for the request body.
+-spec init(pid(), ranch:ref(), inet:socket(), module(),
+    ranch_proxy_header:proxy_info() | undefined, cowboy:opts(),
+    {inet:ip_address(), inet:port_number()}, {inet:ip_address(), inet:port_number()},
+    binary() | undefined, binary(), map() | undefined, cowboy_req:req()) -&gt; no_return().</p>
+<hr />
+<h4 id="loop2"><code>loop/2</code></h4>
+<hr />
+<h4 id="system_code_change4_1"><code>system_code_change/4</code></h4>
+<hr />
+<h4 id="system_continue3_1"><code>system_continue/3</code></h4>
+<p><strong>Arguments</strong>: <code>_, _, {State, Buffer}</code></p>
+<p><strong>Description</strong>: System callbacks.</p>
+<p>-spec system_continue(<em>, </em>, {#state{}, binary()}) -&gt; no_return().</p>
+<hr />
+<h4 id="system_terminate4_1"><code>system_terminate/4</code></h4>
+<hr />
+<h2 id="cowboy_http3">cowboy_http3</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_12">Exported Functions</h3>
+<h4 id="init4"><code>init/4</code></h4>
+<p><strong>Arguments</strong>: <code>Parent, Ref, Conn, Opts</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>%% A key difference between cowboy_http2 and cowboy_http3
+%% is that HTTP/3 streams are QUIC streams and therefore
+%% much of the connection state is handled outside of
+%% Cowboy.</p>
+<p>-module(cowboy_http3).</p>
+<p>-export([init/4]).</p>
+<p>%% Temporary callback to do sendfile over QUIC.
+-export([send/2]).</p>
+<p>%% @todo Graceful shutdown? Linger? Timeouts? Frame rates? PROXY header?
+-type opts() :: #{
+    compress_buffering =&gt; boolean(),
+    compress_threshold =&gt; non_neg_integer(),
+    connection_type =&gt; worker | supervisor,
+    enable_connect_protocol =&gt; boolean(),
+    env =&gt; cowboy_middleware:env(),
+    logger =&gt; module(),
+    max_decode_blocked_streams =&gt; 0..16#3fffffffffffffff,
+    max_decode_table_size =&gt; 0..16#3fffffffffffffff,
+    max_encode_blocked_streams =&gt; 0..16#3fffffffffffffff,
+    max_encode_table_size =&gt; 0..16#3fffffffffffffff,
+    max_ignored_frame_size_received =&gt; non_neg_integer() | infinity,
+    metrics_callback =&gt; cowboy_metrics_h:metrics_callback(),
+    metrics_req_filter =&gt; fun((cowboy_req:req()) -&gt; map()),
+    metrics_resp_headers_filter =&gt; fun((cowboy:http_headers()) -&gt; cowboy:http_headers()),
+    middlewares =&gt; [module()],
+    shutdown_timeout =&gt; timeout(),
+    stream_handlers =&gt; [module()],
+    tracer_callback =&gt; cowboy_tracer_h:tracer_callback(),
+    tracer_flags =&gt; [atom()],
+    tracer_match_specs =&gt; cowboy_tracer_h:tracer_match_specs(),
+    %% Open ended because configured stream handlers might add options.
+    _ =&gt; _
+}.
+-export_type([opts/0]).</p>
+<p>%% HTTP/3 or WebTransport stream.
+%%
+%% WebTransport sessions involve one bidirectional CONNECT stream
+%% that must stay open (and can be used for signaling using the
+%% Capsule Protocol) and an application-defined number of
+%% unidirectional and bidirectional streams, as well as datagrams.
+%%
+%% WebTransport sessions run in the CONNECT request process and
+%% all events related to the session is sent there as a message.
+%% The pid of the process is kept in the state.
+-record(stream, {
+    id :: cow_http3:stream_id(),</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% Whether the stream is currently in a special state.</span>
+<span class="n">status</span><span class="w"> </span><span class="s">::</span><span class="w"> </span><span class="s">header</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="n">unidi</span><span class="p">,</span><span class="w"> </span><span class="n">control</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">encoder</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">decoder</span><span class="p">}</span>
+<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">normal</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="n">data</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ignore</span><span class="p">,</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p">()}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">stopping</span>
+<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="n">webtransport_session</span><span class="p">,</span><span class="w"> </span><span class="n">normal</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="n">ignore</span><span class="p">,</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p">()}}</span>
+<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="n">webtransport_stream</span><span class="p">,</span><span class="w"> </span><span class="n">cow_http3</span><span class="p">:</span><span class="n">stream_id</span><span class="p">()},</span>
+
+<span class="c">%% Stream buffer.</span>
+<span class="n">buffer</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&lt;&lt;&gt;&gt;</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="nb">binary</span><span class="p">(),</span>
+
+<span class="c">%% Stream state.</span>
+<span class="n">state</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="n">module</span><span class="p">(),</span><span class="w"> </span><span class="nb">any</span><span class="p">()}</span>
+</code></pre></div>
+
+<p>}).</p>
+<p>-record(state, {
+    parent :: pid(),
+    ref :: ranch:ref(),
+    conn :: cowboy_quicer:quicer_connection_handle(),
+    opts = #{} :: opts(),</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% Remote address and port for the connection.</span>
+<span class="n">peer</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="p">{</span><span class="n">inet</span><span class="p">:</span><span class="n">ip_address</span><span class="p">(),</span><span class="w"> </span><span class="n">inet</span><span class="p">:</span><span class="n">port_number</span><span class="p">()},</span>
+
+<span class="c">%% Local address and port for the connection.</span>
+<span class="n">sock</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="p">{</span><span class="n">inet</span><span class="p">:</span><span class="n">ip_address</span><span class="p">(),</span><span class="w"> </span><span class="n">inet</span><span class="p">:</span><span class="n">port_number</span><span class="p">()},</span>
+
+<span class="c">%% Client certificate.</span>
+<span class="n">cert</span><span class="w"> </span><span class="s">::</span><span class="w"> </span><span class="s">undefined</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">binary</span><span class="p">(),</span>
+
+<span class="c">%% HTTP/3 state machine.</span>
+<span class="n">http3_machine</span><span class="w"> </span><span class="s">::</span><span class="w"> </span><span class="s">cow_http3_machine:http3_machine(),</span>
+
+<span class="c">%% Specially handled local unidi streams.</span>
+<span class="n">local_control_id</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cow_http3</span><span class="p">:</span><span class="n">stream_id</span><span class="p">(),</span>
+<span class="n">local_encoder_id</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cow_http3</span><span class="p">:</span><span class="n">stream_id</span><span class="p">(),</span>
+<span class="n">local_decoder_id</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cow_http3</span><span class="p">:</span><span class="n">stream_id</span><span class="p">(),</span>
+
+<span class="c">%% Bidirectional streams used for requests and responses,</span>
+<span class="c">%% as well as unidirectional streams initiated by the client.</span>
+<span class="n">streams</span><span class="w"> </span><span class="p">=</span><span class="w"> </span>#<span class="p">{}</span><span class="w"> </span><span class="p">::</span><span class="w"> </span>#<span class="p">{</span><span class="n">cow_http3</span><span class="p">:</span><span class="n">stream_id</span><span class="p">()</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span>#<span class="n">stream</span><span class="p">{}},</span>
+
+<span class="c">%% Lingering streams that were recently reset. We may receive</span>
+<span class="c">%% pending data or messages for these streams a short while</span>
+<span class="c">%% after they have been reset.</span>
+<span class="n">lingering_streams</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="p">[</span><span class="n">non_neg_integer</span><span class="p">()],</span>
+
+<span class="c">%% Streams can spawn zero or more children which are then managed</span>
+<span class="c">%% by this module if operating as a supervisor.</span>
+<span class="n">children</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">cowboy_children</span><span class="p">:</span><span class="n">init</span><span class="p">()</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">cowboy_children</span><span class="p">:</span><span class="n">children</span><span class="p">()</span>
+</code></pre></div>
+
+<p>}).</p>
+<p>-spec init(pid(), ranch:ref(), cowboy_quicer:quicer_connection_handle(), opts())
+    -&gt; no_return().</p>
+<hr />
+<h4 id="send2"><code>send/2</code></h4>
+<p><strong>Arguments</strong>: <code>{Conn, StreamID}, IoData</code></p>
+<p><strong>Description</strong>: Temporary callback to do sendfile over QUIC.
+-spec send({cowboy_quicer:quicer_connection_handle(), cow_http3:stream_id()},
+    iodata()) -&gt; ok | {error, any()}.</p>
+<hr />
+<h2 id="cowboy_loop">cowboy_loop</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_13">Exported Functions</h3>
+<h4 id="loop5"><code>loop/5</code></h4>
+<p><strong>Arguments</strong>: <code>Req=#{pid := Parent}, Env, Handler, HandlerState, Timeout</code></p>
+<p><strong>Description</strong>: @todo Handle system messages.</p>
+<hr />
+<h4 id="system_code_change4_2"><code>system_code_change/4</code></h4>
+<hr />
+<h4 id="system_continue3_2"><code>system_continue/3</code></h4>
+<p><strong>Arguments</strong>: <code>_, _, {Req, Env, Handler, HandlerState, Timeout}</code></p>
+<p><strong>Description</strong>: System callbacks.</p>
+<p>-spec system_continue(<em>, </em>, {Req, Env, module(), any(), timeout()})
+    -&gt; {ok, Req, Env} | {suspend, ?MODULE, loop, [any()]}
+    when Req::cowboy_req:req(), Env::cowboy_middleware:env().</p>
+<hr />
+<h4 id="system_terminate4_2"><code>system_terminate/4</code></h4>
+<hr />
+<h4 id="upgrade4"><code>upgrade/4</code></h4>
+<p><strong>Arguments</strong>: <code>Req, Env, Handler, HandlerState</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_loop).
+-behaviour(cowboy_sub_protocol).</p>
+<p>-export([upgrade/4]).
+-export([upgrade/5]).
+-export([loop/5]).</p>
+<p>-export([system_continue/3]).
+-export([system_terminate/4]).
+-export([system_code_change/4]).</p>
+<p>%% From gen_server.
+-define(is_timeout(X), ((X) =:= infinity orelse (is_integer(X) andalso (X) &gt;= 0))).</p>
+<p>-callback init(Req, any())
+    -&gt; {ok | module(), Req, any()}
+    | {module(), Req, any(), any()}
+    when Req::cowboy_req:req().</p>
+<p>-callback info(any(), Req, State)
+    -&gt; {ok, Req, State}
+    | {ok, Req, State, hibernate}
+    | {stop, Req, State}
+    when Req::cowboy_req:req(), State::any().</p>
+<p>-callback terminate(any(), cowboy_req:req(), any()) -&gt; ok.
+-optional_callbacks([terminate/3]).</p>
+<p>-spec upgrade(Req, Env, module(), any())
+    -&gt; {ok, Req, Env} | {suspend, ?MODULE, loop, [any()]}
+    when Req::cowboy_req:req(), Env::cowboy_middleware:env().</p>
+<hr />
+<h4 id="upgrade5"><code>upgrade/5</code></h4>
+<p><strong>Arguments</strong>: <code>Req, Env, Handler, HandlerState</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_loop).
+-behaviour(cowboy_sub_protocol).</p>
+<p>-export([upgrade/4]).
+-export([upgrade/5]).
+-export([loop/5]).</p>
+<p>-export([system_continue/3]).
+-export([system_terminate/4]).
+-export([system_code_change/4]).</p>
+<p>%% From gen_server.
+-define(is_timeout(X), ((X) =:= infinity orelse (is_integer(X) andalso (X) &gt;= 0))).</p>
+<p>-callback init(Req, any())
+    -&gt; {ok | module(), Req, any()}
+    | {module(), Req, any(), any()}
+    when Req::cowboy_req:req().</p>
+<p>-callback info(any(), Req, State)
+    -&gt; {ok, Req, State}
+    | {ok, Req, State, hibernate}
+    | {stop, Req, State}
+    when Req::cowboy_req:req(), State::any().</p>
+<p>-callback terminate(any(), cowboy_req:req(), any()) -&gt; ok.
+-optional_callbacks([terminate/3]).</p>
+<p>-spec upgrade(Req, Env, module(), any())
+    -&gt; {ok, Req, Env} | {suspend, ?MODULE, loop, [any()]}
+    when Req::cowboy_req:req(), Env::cowboy_middleware:env().</p>
+<hr />
+<h2 id="cowboy_metrics_h">cowboy_metrics_h</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_14">Exported Functions</h3>
+<h4 id="data4_2"><code>data/4</code></h4>
+<hr />
+<h4 id="early_error5_2"><code>early_error/5</code></h4>
+<hr />
+<h4 id="info3_2"><code>info/3</code></h4>
+<hr />
+<h4 id="init3_2"><code>init/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Req=#{ref := Ref}, Opts=#{metrics_callback := Fun}</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_metrics_h).
+-behavior(cowboy_stream).</p>
+<p>-export([init/3]).
+-export([data/4]).
+-export([info/3]).
+-export([terminate/3]).
+-export([early_error/5]).</p>
+<p>-type proc_metrics() :: #{pid() =&gt; #{
+    %% Time at which the process spawned.
+    spawn := integer(),</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% Time at which the process exited.</span>
+<span class="nb">exit</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integer</span><span class="p">(),</span>
+
+<span class="c">%% Reason for the process exit.</span>
+<span class="n">reason</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="nb">any</span><span class="p">()</span>
+</code></pre></div>
+
+<p>}}.</p>
+<p>-type informational_metrics() :: #{
+    %% Informational response status.
+    status := cowboy:http_status(),</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% Headers sent with the informational response.</span>
+<span class="n">headers</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">cowboy:http_headers(),</span>
+
+<span class="c">%% Time when the informational response was sent.</span>
+<span class="nb">time</span><span class="w"> </span><span class="p">:=</span><span class="w"> </span><span class="n">integer</span><span class="p">()</span>
+</code></pre></div>
+
+<p>}.</p>
+<p>-type metrics() :: #{
+    %% The identifier for this listener.
+    ref := ranch:ref(),</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% The pid for this connection.</span>
+<span class="n">pid</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">pid(),</span>
+
+<span class="c">%% The streamid also indicates the total number of requests on</span>
+<span class="c">%% this connection (StreamID div 2 + 1).</span>
+<span class="n">streamid</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">cowboy_stream:streamid(),</span>
+
+<span class="c">%% The terminate reason is always useful.</span>
+<span class="n">reason</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">cowboy_stream:reason(),</span>
+
+<span class="c">%% A filtered Req object or a partial Req object</span>
+<span class="c">%% depending on how far the request got to.</span>
+<span class="n">req</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cowboy_req</span><span class="p">:</span><span class="n">req</span><span class="p">(),</span>
+<span class="n">partial_req</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cowboy_stream</span><span class="p">:</span><span class="n">partial_req</span><span class="p">(),</span>
+
+<span class="c">%% Response status.</span>
+<span class="n">resp_status</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">cowboy:http_status(),</span>
+
+<span class="c">%% Filtered response headers.</span>
+<span class="n">resp_headers</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">cowboy:http_headers(),</span>
+
+<span class="c">%% Start/end of the processing of the request.</span>
+<span class="c">%%</span>
+<span class="c">%% This represents the time from this stream handler&#39;s init</span>
+<span class="c">%% to terminate.</span>
+<span class="n">req_start</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integer</span><span class="p">(),</span>
+<span class="n">req_end</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integer</span><span class="p">(),</span>
+
+<span class="c">%% Start/end of the receiving of the request body.</span>
+<span class="c">%% Begins when the first packet has been received.</span>
+<span class="n">req_body_start</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integer</span><span class="p">(),</span>
+<span class="n">req_body_end</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integer</span><span class="p">(),</span>
+
+<span class="c">%% Start/end of the sending of the response.</span>
+<span class="c">%% Begins when we send the headers and ends on the final</span>
+<span class="c">%% packet of the response body. If everything is sent at</span>
+<span class="c">%% once these values are identical.</span>
+<span class="n">resp_start</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integer</span><span class="p">(),</span>
+<span class="n">resp_end</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integer</span><span class="p">(),</span>
+
+<span class="c">%% For early errors all we get is the time we received it.</span>
+<span class="n">early_error_time</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integer</span><span class="p">(),</span>
+
+<span class="c">%% Start/end of spawned processes. This is where most of</span>
+<span class="c">%% the user code lies, excluding stream handlers. On a</span>
+<span class="c">%% default Cowboy configuration there should be only one</span>
+<span class="c">%% process: the request process.</span>
+<span class="n">procs</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">proc_metrics</span><span class="p">(),</span>
+
+<span class="c">%% Informational responses sent before the final response.</span>
+<span class="n">informational</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">informational_metrics</span><span class="p">()],</span>
+
+<span class="c">%% Length of the request and response bodies. This does</span>
+<span class="c">%% not include the framing.</span>
+<span class="n">req_body_length</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p">(),</span>
+<span class="n">resp_body_length</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p">(),</span>
+
+<span class="c">%% Additional metadata set by the user.</span>
+<span class="n">user_data</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map</span><span class="p">()</span>
+</code></pre></div>
+
+<p>}.
+-export_type([metrics/0]).</p>
+<p>-type metrics_callback() :: fun((metrics()) -&gt; any()).
+-export_type([metrics_callback/0]).</p>
+<p>-record(state, {
+    next :: any(),
+    callback :: fun((metrics()) -&gt; any()),
+    resp_headers_filter :: undefined | fun((cowboy:http_headers()) -&gt; cowboy:http_headers()),
+    req :: map(),
+    resp_status :: undefined | cowboy:http_status(),
+    resp_headers :: undefined | cowboy:http_headers(),
+    ref :: ranch:ref(),
+    req_start :: integer(),
+    req_end :: undefined | integer(),
+    req_body_start :: undefined | integer(),
+    req_body_end :: undefined | integer(),
+    resp_start :: undefined | integer(),
+    resp_end :: undefined | integer(),
+    procs = #{} :: proc_metrics(),
+    informational = [] :: [informational_metrics()],
+    req_body_length = 0 :: non_neg_integer(),
+    resp_body_length = 0 :: non_neg_integer(),
+    user_data = #{} :: map()
+}).</p>
+<p>-spec init(cowboy_stream:streamid(), cowboy_req:req(), cowboy:opts())
+    -&gt; {[{spawn, pid(), timeout()}], #state{}}.</p>
+<hr />
+<h4 id="terminate3_2"><code>terminate/3</code></h4>
+<hr />
+<h2 id="cowboy_quicer">cowboy_quicer</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_15">Exported Functions</h3>
+<h4 id="handle1"><code>handle/1</code></h4>
+<p><strong>Arguments</strong>: <code>{quic, transport_shutdown, _Conn, _Flags}</code></p>
+<p><strong>Description</strong>: QUIC_CONNECTION_EVENT_SHUTDOWN_INITIATED_BY_TRANSPORT</p>
+<hr />
+<h4 id="peercert1"><code>peercert/1</code></h4>
+<hr />
+<h4 id="peername1"><code>peername/1</code></h4>
+<p><strong>Arguments</strong>: <code>Conn</code></p>
+<p><strong>Description</strong>: @todo Make quicer export these types.
+-type quicer_connection_handle() :: reference().
+-export_type([quicer_connection_handle/0]).</p>
+<p>-type quicer_app_errno() :: non_neg_integer().</p>
+<p>-include_lib("quicer/include/quicer.hrl").</p>
+<p>%% Connection.</p>
+<p>-spec peername(quicer_connection_handle())
+    -&gt; {ok, {inet:ip_address(), inet:port_number()}}
+    | {error, any()}.</p>
+<hr />
+<h4 id="send3"><code>send/3</code></h4>
+<hr />
+<h4 id="send4"><code>send/4</code></h4>
+<hr />
+<h4 id="send_datagram2"><code>send_datagram/2</code></h4>
+<hr />
+<h4 id="shutdown2_1"><code>shutdown/2</code></h4>
+<hr />
+<h4 id="shutdown_stream2"><code>shutdown_stream/2</code></h4>
+<p><strong>Arguments</strong>: <code>_Conn, StreamID</code></p>
+<p><strong>Description</strong>: @todo Fix/ignore the Dialyzer error instead of doing this.
+    DataBin = iolist_to_binary(Data),
+    Size = byte_size(DataBin),
+    case quicer:send_dgram(Conn, DataBin) of
+        {ok, Size} -&gt;
+            ok;
+        %% @todo Handle error cases.
+        Error -&gt;
+            Error
+    end.</p>
+<p>-spec shutdown_stream(quicer_connection_handle(), cow_http3:stream_id())
+    -&gt; ok.</p>
+<hr />
+<h4 id="shutdown_stream4"><code>shutdown_stream/4</code></h4>
+<p><strong>Arguments</strong>: <code>_Conn, StreamID</code></p>
+<p><strong>Description</strong>: @todo Fix/ignore the Dialyzer error instead of doing this.
+    DataBin = iolist_to_binary(Data),
+    Size = byte_size(DataBin),
+    case quicer:send_dgram(Conn, DataBin) of
+        {ok, Size} -&gt;
+            ok;
+        %% @todo Handle error cases.
+        Error -&gt;
+            Error
+    end.</p>
+<p>-spec shutdown_stream(quicer_connection_handle(), cow_http3:stream_id())
+    -&gt; ok.</p>
+<hr />
+<h4 id="sockname1"><code>sockname/1</code></h4>
+<hr />
+<h4 id="start_bidi_stream2"><code>start_bidi_stream/2</code></h4>
+<p><strong>Arguments</strong>: <code>Conn, InitialData</code></p>
+<p><strong>Description</strong>: Streams.</p>
+<p>-spec start_bidi_stream(quicer_connection_handle(), iodata())
+    -&gt; {ok, cow_http3:stream_id()}
+    | {error, any()}.</p>
+<hr />
+<h4 id="start_unidi_stream2"><code>start_unidi_stream/2</code></h4>
+<hr />
+<h2 id="cowboy_req">cowboy_req</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+Copyright (c) Anthony Ramine <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#110;&#111;&#120;&#64;&#100;&#101;&#118;&#45;&#101;&#120;&#116;&#101;&#110;&#100;&#46;&#101;&#117;">&#110;&#111;&#120;&#64;&#100;&#101;&#118;&#45;&#101;&#120;&#116;&#101;&#110;&#100;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</p>
+<h3 id="exported-functions_16">Exported Functions</h3>
+<h4 id="binding2"><code>binding/2</code></h4>
+<p><strong>Arguments</strong>: <code>Name, Req</code></p>
+<p><strong>Description</strong>: Disable individual components.
+    &lt;&lt;"//localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; undefined})),
+    &lt;&lt;"/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; undefined})),
+    &lt;&lt;"http://localhost/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{port =&gt; undefined})),
+    &lt;&lt;"http://localhost:8080?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; undefined})),
+    &lt;&lt;"http://localhost:8080/path"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; undefined})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; undefined})),
+    &lt;&lt;"http://localhost:8080"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; undefined, qs =&gt; undefined})),
+    &lt;&lt;&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; undefined, path =&gt; undefined, qs =&gt; undefined})),
+    %% Empty values.
+    &lt;&lt;"//localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"//localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; ""})),
+    &lt;&lt;"//localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; [&lt;&lt;&gt;&gt;]})),
+    &lt;&lt;"/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; ""})),
+    &lt;&lt;"/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; [&lt;&lt;&gt;&gt;]})),
+    &lt;&lt;"http://localhost:8080?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"http://localhost:8080?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; ""})),
+    &lt;&lt;"http://localhost:8080?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; [&lt;&lt;&gt;&gt;]})),
+    &lt;&lt;"http://localhost:8080/path"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"http://localhost:8080/path"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; ""})),
+    &lt;&lt;"http://localhost:8080/path"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; [&lt;&lt;&gt;&gt;]})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; ""})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; [&lt;&lt;&gt;&gt;]})),
+    %% Port is integer() | undefined.
+    {'EXIT', <em>} = (catch iolist_to_binary(uri(Req, #{port =&gt; &lt;&lt;&gt;&gt;}))),
+    {'EXIT', </em>} = (catch iolist_to_binary(uri(Req, #{port =&gt; ""}))),
+    {'EXIT', _} = (catch iolist_to_binary(uri(Req, #{port =&gt; [&lt;&lt;&gt;&gt;]}))),
+    %% Update components.
+    &lt;&lt;"https://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; "https"})),
+    &lt;&lt;"http://example.org:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; "example.org"})),
+    &lt;&lt;"http://localhost:123/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{port =&gt; 123})),
+    &lt;&lt;"http://localhost:8080/custom?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; "/custom"})),
+    &lt;&lt;"http://localhost:8080/path?smart=42"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; "smart=42"})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785#intro"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; "intro"})),
+    %% Interesting combinations.
+    &lt;&lt;"http://localhost/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{port =&gt; 80})),
+    &lt;&lt;"https://localhost/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; "https", port =&gt; 443})),
+    ok.
+-endif.</p>
+<p>-spec binding(atom(), req()) -&gt; any() | undefined.</p>
+<hr />
+<h4 id="binding3"><code>binding/3</code></h4>
+<p><strong>Arguments</strong>: <code>Name, Req</code></p>
+<p><strong>Description</strong>: Disable individual components.
+    &lt;&lt;"//localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; undefined})),
+    &lt;&lt;"/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; undefined})),
+    &lt;&lt;"http://localhost/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{port =&gt; undefined})),
+    &lt;&lt;"http://localhost:8080?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; undefined})),
+    &lt;&lt;"http://localhost:8080/path"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; undefined})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; undefined})),
+    &lt;&lt;"http://localhost:8080"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; undefined, qs =&gt; undefined})),
+    &lt;&lt;&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; undefined, path =&gt; undefined, qs =&gt; undefined})),
+    %% Empty values.
+    &lt;&lt;"//localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"//localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; ""})),
+    &lt;&lt;"//localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; [&lt;&lt;&gt;&gt;]})),
+    &lt;&lt;"/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; ""})),
+    &lt;&lt;"/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; [&lt;&lt;&gt;&gt;]})),
+    &lt;&lt;"http://localhost:8080?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"http://localhost:8080?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; ""})),
+    &lt;&lt;"http://localhost:8080?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; [&lt;&lt;&gt;&gt;]})),
+    &lt;&lt;"http://localhost:8080/path"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"http://localhost:8080/path"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; ""})),
+    &lt;&lt;"http://localhost:8080/path"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; [&lt;&lt;&gt;&gt;]})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; &lt;&lt;&gt;&gt;})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; ""})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; [&lt;&lt;&gt;&gt;]})),
+    %% Port is integer() | undefined.
+    {'EXIT', <em>} = (catch iolist_to_binary(uri(Req, #{port =&gt; &lt;&lt;&gt;&gt;}))),
+    {'EXIT', </em>} = (catch iolist_to_binary(uri(Req, #{port =&gt; ""}))),
+    {'EXIT', _} = (catch iolist_to_binary(uri(Req, #{port =&gt; [&lt;&lt;&gt;&gt;]}))),
+    %% Update components.
+    &lt;&lt;"https://localhost:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; "https"})),
+    &lt;&lt;"http://example.org:8080/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{host =&gt; "example.org"})),
+    &lt;&lt;"http://localhost:123/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{port =&gt; 123})),
+    &lt;&lt;"http://localhost:8080/custom?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{path =&gt; "/custom"})),
+    &lt;&lt;"http://localhost:8080/path?smart=42"&gt;&gt; = iolist_to_binary(uri(Req, #{qs =&gt; "smart=42"})),
+    &lt;&lt;"http://localhost:8080/path?dummy=2785#intro"&gt;&gt; = iolist_to_binary(uri(Req, #{fragment =&gt; "intro"})),
+    %% Interesting combinations.
+    &lt;&lt;"http://localhost/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{port =&gt; 80})),
+    &lt;&lt;"https://localhost/path?dummy=2785"&gt;&gt; = iolist_to_binary(uri(Req, #{scheme =&gt; "https", port =&gt; 443})),
+    ok.
+-endif.</p>
+<p>-spec binding(atom(), req()) -&gt; any() | undefined.</p>
+<hr />
+<h4 id="bindings1"><code>bindings/1</code></h4>
+<hr />
+<h4 id="body_length1"><code>body_length/1</code></h4>
+<p><strong>Arguments</strong>: <code>#{body_length := Length}</code></p>
+<p><strong>Description</strong>: The length may not be known if HTTP/1.1 with a transfer-encoding;
+%% or HTTP/2 with no content-length header. The length is always
+%% known once the body has been completely read.
+-spec body_length(req()) -&gt; undefined | non_neg_integer().</p>
+<hr />
+<h4 id="cast2"><code>cast/2</code></h4>
+<p><strong>Arguments</strong>: <code>Msg, #{pid := Pid, streamid := StreamID}</code></p>
+<p><strong>Description</strong>: Stream handlers.</p>
+<p>-spec cast(any(), req()) -&gt; ok.</p>
+<hr />
+<h4 id="cert1"><code>cert/1</code></h4>
+<hr />
+<h4 id="delete_resp_header2"><code>delete_resp_header/2</code></h4>
+<p><strong>Arguments</strong>: <code>_, Req</code></p>
+<p><strong>Description</strong>: There are no resp headers so we have nothing to delete.</p>
+<hr />
+<h4 id="filter_cookies2"><code>filter_cookies/2</code></h4>
+<hr />
+<h4 id="has_body1"><code>has_body/1</code></h4>
+<p><strong>Arguments</strong>: <code>#{has_body := HasBody}</code></p>
+<p><strong>Description</strong>: Request body.</p>
+<p>-spec has_body(req()) -&gt; boolean().</p>
+<hr />
+<h4 id="has_resp_body1"><code>has_resp_body/1</code></h4>
+<hr />
+<h4 id="has_resp_header2"><code>has_resp_header/2</code></h4>
+<hr />
+<h4 id="header2"><code>header/2</code></h4>
+<hr />
+<h4 id="header3"><code>header/3</code></h4>
+<hr />
+<h4 id="headers1"><code>headers/1</code></h4>
+<hr />
+<h4 id="host1"><code>host/1</code></h4>
+<hr />
+<h4 id="host_info1"><code>host_info/1</code></h4>
+<p><strong>Arguments</strong>: <code>#{host_info := HostInfo}</code></p>
+<p><strong>Description</strong>: @todo The host_info is undefined if cowboy_router isn't used. Do we want to crash?
+-spec host_info(req()) -&gt; cowboy_router:tokens() | undefined.</p>
+<hr />
+<h4 id="inform2"><code>inform/2</code></h4>
+<hr />
+<h4 id="inform3"><code>inform/3</code></h4>
+<hr />
+<h4 id="match_cookies2"><code>match_cookies/2</code></h4>
+<hr />
+<h4 id="match_qs2"><code>match_qs/2</code></h4>
+<hr />
+<h4 id="method1"><code>method/1</code></h4>
+<p><strong>Arguments</strong>: <code>#{method := Method}</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Copyright (c) Anthony Ramine <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#110;&#111;&#120;&#64;&#100;&#101;&#118;&#45;&#101;&#120;&#116;&#101;&#110;&#100;&#46;&#101;&#117;">&#110;&#111;&#120;&#64;&#100;&#101;&#118;&#45;&#101;&#120;&#116;&#101;&#110;&#100;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_req).</p>
+<p>%% Request.
+-export([method/1]).
+-export([version/1]).
+-export([peer/1]).
+-export([sock/1]).
+-export([cert/1]).
+-export([scheme/1]).
+-export([host/1]).
+-export([host_info/1]).
+-export([port/1]).
+-export([path/1]).
+-export([path_info/1]).
+-export([qs/1]).
+-export([parse_qs/1]).
+-export([match_qs/2]).
+-export([uri/1]).
+-export([uri/2]).
+-export([binding/2]).
+-export([binding/3]).
+-export([bindings/1]).
+-export([header/2]).
+-export([header/3]).
+-export([headers/1]).
+-export([parse_header/2]).
+-export([parse_header/3]).
+-export([filter_cookies/2]).
+-export([parse_cookies/1]).
+-export([match_cookies/2]).</p>
+<p>%% Request body.
+-export([has_body/1]).
+-export([body_length/1]).
+-export([read_body/1]).
+-export([read_body/2]).
+-export([read_urlencoded_body/1]).
+-export([read_urlencoded_body/2]).
+-export([read_and_match_urlencoded_body/2]).
+-export([read_and_match_urlencoded_body/3]).</p>
+<p>%% Multipart.
+-export([read_part/1]).
+-export([read_part/2]).
+-export([read_part_body/1]).
+-export([read_part_body/2]).</p>
+<p>%% Response.
+-export([set_resp_cookie/3]).
+-export([set_resp_cookie/4]).
+-export([resp_header/2]).
+-export([resp_header/3]).
+-export([resp_headers/1]).
+-export([set_resp_header/3]).
+-export([set_resp_headers/2]).
+-export([has_resp_header/2]).
+-export([delete_resp_header/2]).
+-export([set_resp_body/2]).
+%% @todo set_resp_body/3 with a ContentType or even Headers argument, to set content headers.
+-export([has_resp_body/1]).
+-export([inform/2]).
+-export([inform/3]).
+-export([reply/2]).
+-export([reply/3]).
+-export([reply/4]).
+-export([stream_reply/2]).
+-export([stream_reply/3]).
+%% @todo stream_body/2 (nofin)
+-export([stream_body/3]).
+%% @todo stream_events/2 (nofin)
+-export([stream_events/3]).
+-export([stream_trailers/2]).
+-export([push/3]).
+-export([push/4]).</p>
+<p>%% Stream handlers.
+-export([cast/2]).</p>
+<p>%% Internal.
+-export([response_headers/2]).</p>
+<p>-type read_body_opts() :: #{
+    length =&gt; non_neg_integer() | infinity,
+    period =&gt; non_neg_integer(),
+    timeout =&gt; timeout()
+}.
+-export_type([read_body_opts/0]).</p>
+<p>%% While sendfile allows a Len of 0 that means "everything past Offset",
+%% Cowboy expects the real length as it is used as metadata.
+-type resp_body() :: iodata()
+    | {sendfile, non_neg_integer(), non_neg_integer(), file:name_all()}.
+-export_type([resp_body/0]).</p>
+<p>-type push_opts() :: #{
+    method =&gt; binary(),
+    scheme =&gt; binary(),
+    host =&gt; binary(),
+    port =&gt; inet:port_number(),
+    qs =&gt; binary()
+}.
+-export_type([push_opts/0]).</p>
+<p>-type req() :: #{
+    %% Public interface.
+    method := binary(),
+    version := cowboy:http_version() | atom(),
+    scheme := binary(),
+    host := binary(),
+    port := inet:port_number(),
+    path := binary(),
+    qs := binary(),
+    headers := cowboy:http_headers(),
+    peer := {inet:ip_address(), inet:port_number()},
+    sock := {inet:ip_address(), inet:port_number()},
+    cert := binary() | undefined,</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% Private interface.</span>
+<span class="n">ref</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">ranch:ref(),</span>
+<span class="n">pid</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">pid(),</span>
+<span class="n">streamid</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">cowboy_stream:streamid(),</span>
+
+<span class="n">host_info</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cowboy_router</span><span class="p">:</span><span class="n">tokens</span><span class="p">(),</span>
+<span class="n">path_info</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cowboy_router</span><span class="p">:</span><span class="n">tokens</span><span class="p">(),</span>
+<span class="n">bindings</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cowboy_router</span><span class="p">:</span><span class="n">bindings</span><span class="p">(),</span>
+
+<span class="n">has_body</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">boolean(),</span>
+<span class="n">body_length</span><span class="w"> </span><span class="s">:=</span><span class="w"> </span><span class="s">non_neg_integer()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">undefined</span><span class="p">,</span>
+<span class="n">has_read_body</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span>
+<span class="n">multipart</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="nb">binary</span><span class="p">(),</span><span class="w"> </span><span class="nb">binary</span><span class="p">()}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">done</span><span class="p">,</span>
+
+<span class="n">has_sent_resp</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">headers</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span>
+<span class="n">resp_cookies</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span>#<span class="p">{</span><span class="n">iodata</span><span class="p">()</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iodata</span><span class="p">()},</span>
+<span class="n">resp_headers</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span>#<span class="p">{</span><span class="nb">binary</span><span class="p">()</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iodata</span><span class="p">()},</span>
+<span class="n">resp_body</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">resp_body</span><span class="p">(),</span>
+
+<span class="n">proxy_header</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ranch_proxy_header</span><span class="p">:</span><span class="n">proxy_info</span><span class="p">(),</span>
+<span class="n">media_type</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="nb">binary</span><span class="p">(),</span><span class="w"> </span><span class="nb">binary</span><span class="p">(),</span><span class="w"> </span><span class="p">[{</span><span class="nb">binary</span><span class="p">(),</span><span class="w"> </span><span class="nb">binary</span><span class="p">()}]},</span>
+<span class="n">language</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="nb">binary</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">undefined</span><span class="p">,</span>
+<span class="n">charset</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="nb">binary</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">undefined</span><span class="p">,</span>
+<span class="n">range</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="nb">binary</span><span class="p">(),</span><span class="w"> </span><span class="nb">binary</span><span class="p">()</span>
+<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="p">[{</span><span class="n">non_neg_integer</span><span class="p">(),</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">infinity</span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">neg_integer</span><span class="p">()]},</span>
+<span class="n">websocket_version</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span>
+
+<span class="c">%% The user is encouraged to use the Req to store information</span>
+<span class="c">%% when no better solution is available.</span>
+<span class="n">_</span><span class="w"> </span><span class="p">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_</span>
+</code></pre></div>
+
+<p>}.
+-export_type([req/0]).</p>
+<p>%% Request.</p>
+<p>-spec method(req()) -&gt; binary().</p>
+<hr />
+<h4 id="parse_cookies1"><code>parse_cookies/1</code></h4>
+<hr />
+<h4 id="parse_header2"><code>parse_header/2</code></h4>
+<hr />
+<h4 id="parse_header3"><code>parse_header/3</code></h4>
+<hr />
+<h4 id="parse_qs1"><code>parse_qs/1</code></h4>
+<p><strong>Arguments</strong>: <code>#{qs := Qs}</code></p>
+<p><strong>Description</strong>: @todo Might be useful to limit the number of keys.
+-spec parse_qs(req()) -&gt; [{binary(), binary() | true}].</p>
+<hr />
+<h4 id="path1"><code>path/1</code></h4>
+<hr />
+<h4 id="path_info1"><code>path_info/1</code></h4>
+<p><strong>Arguments</strong>: <code>#{path_info := PathInfo}</code></p>
+<p><strong>Description</strong>: @todo The path_info is undefined if cowboy_router isn't used. Do we want to crash?
+-spec path_info(req()) -&gt; cowboy_router:tokens() | undefined.</p>
+<hr />
+<h4 id="peer1"><code>peer/1</code></h4>
+<hr />
+<h4 id="port1"><code>port/1</code></h4>
+<hr />
+<h4 id="push3"><code>push/3</code></h4>
+<p><strong>Arguments</strong>: <code>_, _, #{has_sent_resp := _}, _</code></p>
+<p><strong>Description</strong>: @todo Optimization: don't send anything at all for HTTP/1.0 and HTTP/1.1.
+%% @todo Path, Headers, Opts, everything should be in proper binary,
+%% or normalized when creating the Req object.
+-spec push(iodata(), cowboy:http_headers(), req(), push_opts()) -&gt; ok.</p>
+<hr />
+<h4 id="push4"><code>push/4</code></h4>
+<p><strong>Arguments</strong>: <code>_, _, #{has_sent_resp := _}, _</code></p>
+<p><strong>Description</strong>: @todo Optimization: don't send anything at all for HTTP/1.0 and HTTP/1.1.
+%% @todo Path, Headers, Opts, everything should be in proper binary,
+%% or normalized when creating the Req object.
+-spec push(iodata(), cowboy:http_headers(), req(), push_opts()) -&gt; ok.</p>
+<hr />
+<h4 id="qs1"><code>qs/1</code></h4>
+<hr />
+<h4 id="read_and_match_urlencoded_body2"><code>read_and_match_urlencoded_body/2</code></h4>
+<hr />
+<h4 id="read_and_match_urlencoded_body3"><code>read_and_match_urlencoded_body/3</code></h4>
+<hr />
+<h4 id="read_body1"><code>read_body/1</code></h4>
+<hr />
+<h4 id="read_body2"><code>read_body/2</code></h4>
+<hr />
+<h4 id="read_part1"><code>read_part/1</code></h4>
+<p><strong>Arguments</strong>: <code>Req</code></p>
+<p><strong>Description</strong>: Multipart.</p>
+<p>-spec read_part(Req)
+    -&gt; {ok, cowboy:http_headers(), Req} | {done, Req}
+    when Req::req().</p>
+<hr />
+<h4 id="read_part2"><code>read_part/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req</code></p>
+<p><strong>Description</strong>: Multipart.</p>
+<p>-spec read_part(Req)
+    -&gt; {ok, cowboy:http_headers(), Req} | {done, Req}
+    when Req::req().</p>
+<hr />
+<h4 id="read_part_body1"><code>read_part_body/1</code></h4>
+<p><strong>Arguments</strong>: <code>Req</code></p>
+<p><strong>Description</strong>: Reject multipart content containing duplicate headers.
+            true = map_size(Headers) =:= length(Headers0),
+            {ok, Headers, Req#{multipart =&gt; {Boundary, Rest}}};
+        %% Ignore epilogue.
+        {done, <em>} -&gt;
+            {done, Req#{multipart =&gt; done}}
+    catch </em>:_:Stacktrace -&gt;
+        erlang:raise(exit, {request_error, {multipart, headers},
+            'Malformed body; multipart expected.'
+        }, Stacktrace)
+    end.</p>
+<p>-spec read_part_body(Req)
+    -&gt; {ok, binary(), Req} | {more, binary(), Req}
+    when Req::req().</p>
+<hr />
+<h4 id="read_part_body2"><code>read_part_body/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req</code></p>
+<p><strong>Description</strong>: Reject multipart content containing duplicate headers.
+            true = map_size(Headers) =:= length(Headers0),
+            {ok, Headers, Req#{multipart =&gt; {Boundary, Rest}}};
+        %% Ignore epilogue.
+        {done, <em>} -&gt;
+            {done, Req#{multipart =&gt; done}}
+    catch </em>:_:Stacktrace -&gt;
+        erlang:raise(exit, {request_error, {multipart, headers},
+            'Malformed body; multipart expected.'
+        }, Stacktrace)
+    end.</p>
+<p>-spec read_part_body(Req)
+    -&gt; {ok, binary(), Req} | {more, binary(), Req}
+    when Req::req().</p>
+<hr />
+<h4 id="read_urlencoded_body1"><code>read_urlencoded_body/1</code></h4>
+<hr />
+<h4 id="read_urlencoded_body2"><code>read_urlencoded_body/2</code></h4>
+<hr />
+<h4 id="reply2"><code>reply/2</code></h4>
+<p><strong>Arguments</strong>: <code>Status, Headers, Body, Req)
+        when Status =:= 204; Status =:= 304 -&gt;
+    do_reply_ensure_no_body(Status, Headers, Body, Req);
+reply(Status = &lt;&lt;"204",_/bits&gt;&gt;, Headers, Body, Req</code></p>
+<p><strong>Description</strong>: 204 responses must not include content-length. 304 responses may
+%% but only when set explicitly. (RFC7230 3.3.1, RFC7230 3.3.2)
+%% Neither status code must include a response body. (RFC7230 3.3)</p>
+<hr />
+<h4 id="reply3"><code>reply/3</code></h4>
+<p><strong>Arguments</strong>: <code>Status, Headers, Body, Req)
+        when Status =:= 204; Status =:= 304 -&gt;
+    do_reply_ensure_no_body(Status, Headers, Body, Req);
+reply(Status = &lt;&lt;"204",_/bits&gt;&gt;, Headers, Body, Req</code></p>
+<p><strong>Description</strong>: 204 responses must not include content-length. 304 responses may
+%% but only when set explicitly. (RFC7230 3.3.1, RFC7230 3.3.2)
+%% Neither status code must include a response body. (RFC7230 3.3)</p>
+<hr />
+<h4 id="reply4"><code>reply/4</code></h4>
+<p><strong>Arguments</strong>: <code>Status, Headers, Body, Req)
+        when Status =:= 204; Status =:= 304 -&gt;
+    do_reply_ensure_no_body(Status, Headers, Body, Req);
+reply(Status = &lt;&lt;"204",_/bits&gt;&gt;, Headers, Body, Req</code></p>
+<p><strong>Description</strong>: 204 responses must not include content-length. 304 responses may
+%% but only when set explicitly. (RFC7230 3.3.1, RFC7230 3.3.2)
+%% Neither status code must include a response body. (RFC7230 3.3)</p>
+<hr />
+<h4 id="resp_header2"><code>resp_header/2</code></h4>
+<hr />
+<h4 id="resp_header3"><code>resp_header/3</code></h4>
+<hr />
+<h4 id="resp_headers1"><code>resp_headers/1</code></h4>
+<hr />
+<h4 id="response_headers2"><code>response_headers/2</code></h4>
+<p><strong>Arguments</strong>: <code>Headers0, Req</code></p>
+<p><strong>Description</strong>: Internal.</p>
+<p>%% @todo What about set-cookie headers set through set_resp_header or reply?
+-spec response_headers(Headers, req()) -&gt; Headers when Headers::cowboy:http_headers().</p>
+<hr />
+<h4 id="scheme1"><code>scheme/1</code></h4>
+<hr />
+<h4 id="set_resp_body2"><code>set_resp_body/2</code></h4>
+<hr />
+<h4 id="set_resp_cookie3"><code>set_resp_cookie/3</code></h4>
+<p><strong>Arguments</strong>: <code>Name, Value, Req, Opts</code></p>
+<p><strong>Description</strong>: The cookie name cannot contain any of the following characters:
+%%   =,;\s\t\r\n\013\014
+%%
+%% The cookie value cannot contain any of the following characters:
+%%   ,; \t\r\n\013\014
+-spec set_resp_cookie(binary(), iodata(), Req, cow_cookie:cookie_opts())
+    -&gt; Req when Req::req().</p>
+<hr />
+<h4 id="set_resp_cookie4"><code>set_resp_cookie/4</code></h4>
+<p><strong>Arguments</strong>: <code>Name, Value, Req, Opts</code></p>
+<p><strong>Description</strong>: The cookie name cannot contain any of the following characters:
+%%   =,;\s\t\r\n\013\014
+%%
+%% The cookie value cannot contain any of the following characters:
+%%   ,; \t\r\n\013\014
+-spec set_resp_cookie(binary(), iodata(), Req, cow_cookie:cookie_opts())
+    -&gt; Req when Req::req().</p>
+<hr />
+<h4 id="set_resp_header3"><code>set_resp_header/3</code></h4>
+<p><strong>Arguments</strong>: <code>&lt;&lt;"set-cookie"&gt;&gt;, _, _</code></p>
+<p><strong>Description</strong>: @todo We could add has_resp_cookie and unset_resp_cookie now.</p>
+<p>-spec set_resp_header(binary(), iodata(), Req)
+    -&gt; Req when Req::req().</p>
+<hr />
+<h4 id="set_resp_headers2"><code>set_resp_headers/2</code></h4>
+<hr />
+<h4 id="sock1"><code>sock/1</code></h4>
+<hr />
+<h4 id="stream_body3"><code>stream_body/3</code></h4>
+<p><strong>Arguments</strong>: <code>Msg, Req=#{pid := Pid}</code></p>
+<p><strong>Description</strong>: @todo Do we need a timeout?</p>
+<hr />
+<h4 id="stream_events3"><code>stream_events/3</code></h4>
+<hr />
+<h4 id="stream_reply2"><code>stream_reply/2</code></h4>
+<p><strong>Arguments</strong>: <code>Status, Headers=#{}, Req)
+        when Status =:= 204; Status =:= 304 -&gt;
+    reply(Status, Headers, &lt;&lt;&gt;&gt;, Req);
+stream_reply(Status = &lt;&lt;"204",_/bits&gt;&gt;, Headers=#{}, Req</code></p>
+<p><strong>Description</strong>: 204 and 304 responses must NOT send a body. We therefore
+%% transform the call to a full response and expect the user
+%% to NOT call stream_body/3 afterwards. (RFC7230 3.3)</p>
+<hr />
+<h4 id="stream_reply3"><code>stream_reply/3</code></h4>
+<p><strong>Arguments</strong>: <code>Status, Headers=#{}, Req)
+        when Status =:= 204; Status =:= 304 -&gt;
+    reply(Status, Headers, &lt;&lt;&gt;&gt;, Req);
+stream_reply(Status = &lt;&lt;"204",_/bits&gt;&gt;, Headers=#{}, Req</code></p>
+<p><strong>Description</strong>: 204 and 304 responses must NOT send a body. We therefore
+%% transform the call to a full response and expect the user
+%% to NOT call stream_body/3 afterwards. (RFC7230 3.3)</p>
+<hr />
+<h4 id="stream_trailers2"><code>stream_trailers/2</code></h4>
+<hr />
+<h4 id="uri1"><code>uri/1</code></h4>
+<hr />
+<h4 id="uri2"><code>uri/2</code></h4>
+<hr />
+<h4 id="version1"><code>version/1</code></h4>
+<hr />
+<h2 id="cowboy_rest">cowboy_rest</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_17">Exported Functions</h3>
+<h4 id="upgrade4_1"><code>upgrade/4</code></h4>
+<p><strong>Arguments</strong>: <code>Req, Env, Handler, HandlerState, _Opts</code></p>
+<p><strong>Description</strong>: cowboy_rest takes no options.</p>
+<hr />
+<h4 id="upgrade5_1"><code>upgrade/5</code></h4>
+<p><strong>Arguments</strong>: <code>Req, Env, Handler, HandlerState, _Opts</code></p>
+<p><strong>Description</strong>: cowboy_rest takes no options.</p>
+<hr />
+<h2 id="cowboy_router">cowboy_router</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_18">Exported Functions</h3>
+<h4 id="compile1"><code>compile/1</code></h4>
+<p><strong>Arguments</strong>: <code>Routes</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>%% Routing middleware.
+%%
+%% Resolve the handler to be used for the request based on the
+%% routing information found in the <em>dispatch</em> environment value.
+%% When found, the handler module and associated data are added to
+%% the environment as the <em>handler</em> and <em>handler_opts</em> values
+%% respectively.
+%%
+%% If the route cannot be found, processing stops with either
+%% a 400 or a 404 reply.
+-module(cowboy_router).
+-behaviour(cowboy_middleware).</p>
+<p>-export([compile/1]).
+-export([execute/2]).</p>
+<p>-type bindings() :: #{atom() =&gt; any()}.
+-type tokens() :: [binary()].
+-export_type([bindings/0]).
+-export_type([tokens/0]).</p>
+<p>-type route_match() :: '_' | iodata().
+-type route_path() :: {Path::route_match(), Handler::module(), Opts::any()}
+    | {Path::route_match(), cowboy:fields(), Handler::module(), Opts::any()}.
+-type route_rule() :: {Host::route_match(), Paths::[route_path()]}
+    | {Host::route_match(), cowboy:fields(), Paths::[route_path()]}.
+-type routes() :: [route_rule()].
+-export_type([routes/0]).</p>
+<p>-type dispatch_match() :: '<em>' | &lt;&lt;</em>:8&gt;&gt; | [binary() | '_' | '...' | atom()].
+-type dispatch_path() :: {dispatch_match(), cowboy:fields(), module(), any()}.
+-type dispatch_rule() :: {Host::dispatch_match(), cowboy:fields(), Paths::[dispatch_path()]}.
+-opaque dispatch_rules() :: [dispatch_rule()].
+-export_type([dispatch_rules/0]).</p>
+<p>-spec compile(routes()) -&gt; dispatch_rules().</p>
+<hr />
+<h4 id="execute2_1"><code>execute/2</code></h4>
+<hr />
+<h2 id="cowboy_static">cowboy_static</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+Copyright (c) Magnus Klaar <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#103;&#110;&#117;&#115;&#46;&#107;&#108;&#97;&#97;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#109;&#97;&#103;&#110;&#117;&#115;&#46;&#107;&#108;&#97;&#97;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</p>
+<h3 id="exported-functions_19">Exported Functions</h3>
+<h4 id="charsets_provided2"><code>charsets_provided/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State={Path, _, Extra}</code></p>
+<p><strong>Description</strong>: Detect the charset of the file.</p>
+<p>-spec charsets_provided(Req, State)
+    -&gt; {[binary()], Req, State} | no_call
+    when State::state().</p>
+<hr />
+<h4 id="content_types_provided2"><code>content_types_provided/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State={Path, _, Extra}) when is_list(Extra</code></p>
+<p><strong>Description</strong>: Detect the mimetype of the file.</p>
+<p>-spec content_types_provided(Req, State)
+    -&gt; {[{binary() | {binary(), binary(), '*' | [{binary(), binary()}]}, get_file}], Req, State}
+    when State::state().</p>
+<hr />
+<h4 id="forbidden2"><code>forbidden/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State={_, {_, #file_info{type=directory}}, _}</code></p>
+<p><strong>Description</strong>: Directories, files that can't be accessed at all and
+%% files with no read flag are forbidden.</p>
+<p>-spec forbidden(Req, State)
+    -&gt; {boolean(), Req, State}
+    when State::state().</p>
+<hr />
+<h4 id="generate_etag2"><code>generate_etag/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State={Path, {_, #file_info{size=Size, mtime=Mtime}},
+        Extra}</code></p>
+<p><strong>Description</strong>: Generate an etag for the file.</p>
+<p>-spec generate_etag(Req, State)
+    -&gt; {{strong | weak, binary() | undefined}, Req, State}
+    when State::state().</p>
+<hr />
+<h4 id="get_file2"><code>get_file/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State={Path, {direct, #file_info{size=Size}}, _}</code></p>
+<p><strong>Description</strong>: Stream the file.</p>
+<p>-spec get_file(Req, State)
+    -&gt; {{sendfile, 0, non_neg_integer(), binary()} | binary(), Req, State}
+    when State::state().</p>
+<hr />
+<h4 id="init2"><code>init/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, {Name, Path}</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Copyright (c) Magnus Klaar <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#103;&#110;&#117;&#115;&#46;&#107;&#108;&#97;&#97;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#109;&#97;&#103;&#110;&#117;&#115;&#46;&#107;&#108;&#97;&#97;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_static).</p>
+<p>-export([init/2]).
+-export([malformed_request/2]).
+-export([forbidden/2]).
+-export([content_types_provided/2]).
+-export([charsets_provided/2]).
+-export([ranges_provided/2]).
+-export([resource_exists/2]).
+-export([last_modified/2]).
+-export([generate_etag/2]).
+-export([get_file/2]).</p>
+<p>-type extra_charset() :: {charset, module(), function()} | {charset, binary()}.
+-type extra_etag() :: {etag, module(), function()} | {etag, false}.
+-type extra_mimetypes() :: {mimetypes, module(), function()}
+    | {mimetypes, binary() | {binary(), binary(), '*' | [{binary(), binary()}]}}.
+-type extra() :: [extra_charset() | extra_etag() | extra_mimetypes()].
+-type opts() :: {file | dir, string() | binary()}
+    | {file | dir, string() | binary(), extra()}
+    | {priv_file | priv_dir, atom(), string() | binary()}
+    | {priv_file | priv_dir, atom(), string() | binary(), extra()}.
+-export_type([opts/0]).</p>
+<p>-include_lib("kernel/include/file.hrl").</p>
+<p>-type state() :: {binary(), {direct | archive, #file_info{}}
+    | {error, atom()}, extra()}.</p>
+<p>%% Resolve the file that will be sent and get its file information.
+%% If the handler is configured to manage a directory, check that the
+%% requested file is inside the configured directory.</p>
+<p>-spec init(Req, opts()) -&gt; {cowboy_rest, Req, error | state()} when Req::cowboy_req:req().</p>
+<hr />
+<h4 id="last_modified2"><code>last_modified/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State={_, {_, #file_info{mtime=Modified}}, _}</code></p>
+<p><strong>Description</strong>: Return the time of last modification of the file.</p>
+<p>-spec last_modified(Req, State)
+    -&gt; {calendar:datetime(), Req, State}
+    when State::state().</p>
+<hr />
+<h4 id="malformed_request2"><code>malformed_request/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State</code></p>
+<p><strong>Description</strong>: Reject requests that tried to access a file outside
+%% the target directory, or used reserved characters.</p>
+<p>-spec malformed_request(Req, State)
+    -&gt; {boolean(), Req, State}.</p>
+<hr />
+<h4 id="ranges_provided2"><code>ranges_provided/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State</code></p>
+<p><strong>Description</strong>: We simulate the callback not being exported.
+        false -&gt;
+            no_call;
+        {charset, Module, Function} -&gt;
+            {[Module:Function(Path)], Req, State};
+        {charset, Charset} when is_binary(Charset) -&gt;
+            {[Charset], Req, State}
+    end.</p>
+<p>%% Enable support for range requests.</p>
+<p>-spec ranges_provided(Req, State)
+    -&gt; {[{binary(), auto}], Req, State}
+    when State::state().</p>
+<hr />
+<h4 id="resource_exists2"><code>resource_exists/2</code></h4>
+<p><strong>Arguments</strong>: <code>Req, State={_, {_, #file_info{type=regular}}, _}</code></p>
+<p><strong>Description</strong>: Assume the resource doesn't exist if it's not a regular file.</p>
+<p>-spec resource_exists(Req, State)
+    -&gt; {boolean(), Req, State}
+    when State::state().</p>
+<hr />
+<h2 id="cowboy_stream">cowboy_stream</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_20">Exported Functions</h3>
+<h4 id="data4_3"><code>data/4</code></h4>
+<p><strong>Arguments</strong>: <code>_, _, _, undefined</code></p>
+<p><strong>Description</strong>: We call the next handler and remove it from the list of
+            %% stream handlers. This means that handlers that run after
+            %% it have no knowledge it exists. Should user require this
+            %% knowledge they can just define a separate option that will
+            %% be left untouched.
+            {Commands, State} = Handler:init(StreamID, Req, Opts#{stream_handlers =&gt; Tail}),
+            {Commands, {Handler, State}}
+    end.</p>
+<p>-spec data(streamid(), fin(), binary(), {Handler, State} | undefined)
+    -&gt; {commands(), {Handler, State} | undefined}
+    when Handler::module(), State::state().</p>
+<hr />
+<h4 id="early_error5_3"><code>early_error/5</code></h4>
+<hr />
+<h4 id="info3_3"><code>info/3</code></h4>
+<hr />
+<h4 id="init3_3"><code>init/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Req, Opts</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_stream).</p>
+<p>-type state() :: any().
+-type human_reason() :: atom().</p>
+<p>-type streamid() :: any().
+-export_type([streamid/0]).</p>
+<p>-type fin() :: fin | nofin.
+-export_type([fin/0]).</p>
+<p>%% @todo Perhaps it makes more sense to have resp_body in this module?</p>
+<p>-type resp_command()
+    :: {response, cowboy:http_status(), cowboy:http_headers(), cowboy_req:resp_body()}.
+-export_type([resp_command/0]).</p>
+<p>-type commands() :: [{inform, cowboy:http_status(), cowboy:http_headers()}
+    | resp_command()
+    | {headers, cowboy:http_status(), cowboy:http_headers()}
+    | {data, fin(), cowboy_req:resp_body()}
+    | {trailers, cowboy:http_headers()}
+    | {push, binary(), binary(), binary(), inet:port_number(),
+        binary(), binary(), cowboy:http_headers()}
+    | {flow, pos_integer()}
+    | {spawn, pid(), timeout()}
+    | {error_response, cowboy:http_status(), cowboy:http_headers(), iodata()}
+    | {switch_protocol, cowboy:http_headers(), module(), state()}
+    | {internal_error, any(), human_reason()}
+    | {set_options, map()}
+    | {log, logger:level(), io:format(), list()}
+    | stop].
+-export_type([commands/0]).</p>
+<p>-type reason() :: normal | switch_protocol
+    | {internal_error, timeout | {error | exit | throw, any()}, human_reason()}
+    | {socket_error, closed | atom(), human_reason()}
+    %% @todo Or cow_http3:error().
+    | {stream_error, cow_http2:error(), human_reason()}
+    | {connection_error, cow_http2:error(), human_reason()}
+    | {stop, cow_http2:frame() | {exit, any()}, human_reason()}.
+-export_type([reason/0]).</p>
+<p>-type partial_req() :: map(). %% @todo Take what's in cowboy_req with everything? optional.
+-export_type([partial_req/0]).</p>
+<p>-callback init(streamid(), cowboy_req:req(), cowboy:opts()) -&gt; {commands(), state()}.
+-callback data(streamid(), fin(), binary(), State) -&gt; {commands(), State} when State::state().
+-callback info(streamid(), any(), State) -&gt; {commands(), State} when State::state().
+-callback terminate(streamid(), reason(), state()) -&gt; any().
+-callback early_error(streamid(), reason(), partial_req(), Resp, cowboy:opts())
+    -&gt; Resp when Resp::resp_command().</p>
+<p>%% @todo To optimize the number of active timers we could have a command
+%% that enables a timeout that is called in the absence of any other call,
+%% similar to what gen_server does. However the nice thing about this is
+%% that the connection process can keep a single timer around (the same
+%% one that would be used to detect half-closed sockets) and use this
+%% timer and other events to trigger the timeout in streams at their
+%% intended time.
+%%
+%% This same timer can be used to try and send PING frames to help detect
+%% that the connection is indeed unresponsive.</p>
+<p>-export([init/3]).
+-export([data/4]).
+-export([info/3]).
+-export([terminate/3]).
+-export([early_error/5]).
+-export([make_error_log/5]).</p>
+<p>%% Note that this and other functions in this module do NOT catch
+%% exceptions. We want the exception to go all the way down to the
+%% protocol code.
+%%
+%% OK the failure scenario is not so clear. The problem is
+%% that the failure at any point in init/3 will result in the
+%% corresponding state being lost. I am unfortunately not
+%% confident we can do anything about this. If the crashing
+%% handler just created a process, we'll never know about it.
+%% Therefore at this time I choose to leave all failure handling
+%% to the protocol process.
+%%
+%% Note that a failure in init/3 will result in terminate/3
+%% NOT being called. This is because the state is not available.</p>
+<p>-spec init(streamid(), cowboy_req:req(), cowboy:opts())
+    -&gt; {commands(), {module(), state()} | undefined}.</p>
+<hr />
+<h4 id="make_error_log5"><code>make_error_log/5</code></h4>
+<p><strong>Arguments</strong>: <code>init, [StreamID, Req, Opts], Class, Exception, Stacktrace</code></p>
+<p><strong>Description</strong>: This is the same behavior as in init/3.
+            Handler:early_error(StreamID, Reason,
+                PartialReq, Resp, Opts#{stream_handlers =&gt; Tail})
+    end.</p>
+<p>-spec make_error_log(init | data | info | terminate | early_error,
+    list(), error | exit | throw, any(), list())
+    -&gt; {log, error, string(), list()}.</p>
+<hr />
+<h4 id="terminate3_3"><code>terminate/3</code></h4>
+<hr />
+<h2 id="cowboy_stream_h">cowboy_stream_h</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_21">Exported Functions</h3>
+<h4 id="data4_4"><code>data/4</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, IsFin=nofin, Data, State=#state{
+        read_body_length=ReadLen, read_body_buffer=Buffer, body_length=BodyLen})
+        when byte_size(Data) + byte_size(Buffer) &lt; ReadLen -&gt;
+    do_data(StreamID, IsFin, Data, [], State#state{
+        expect=undefined,
+        read_body_buffer= &lt;&lt; Buffer/binary, Data/binary &gt;&gt;,
+        body_length=BodyLen + byte_size(Data)
+    });
+%% Stream is waiting for data and we received enough to send.
+data(StreamID, IsFin, Data, State=#state{read_body_pid=Pid, read_body_ref=Ref,
+        read_body_timer_ref=TRef, read_body_buffer=Buffer, body_length=BodyLen0}</code></p>
+<p><strong>Description</strong>: @todo This is wrong, it's missing byte_size(Data).
+        body_length=BodyLen
+    });
+%% Stream is waiting for data but we didn't receive enough to send yet.</p>
+<hr />
+<h4 id="early_error5_4"><code>early_error/5</code></h4>
+<hr />
+<h4 id="info3_4"><code>info/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Info, State</code></p>
+<p><strong>Description</strong>: Unknown message, either stray or meant for a handler down the line.</p>
+<hr />
+<h4 id="init3_4"><code>init/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Req=#{ref := Ref}, Opts</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_stream_h).
+-behavior(cowboy_stream).</p>
+<p>-export([init/3]).
+-export([data/4]).
+-export([info/3]).
+-export([terminate/3]).
+-export([early_error/5]).</p>
+<p>-export([request_process/3]).
+-export([resume/5]).</p>
+<p>-record(state, {
+    next :: any(),
+    ref = undefined :: ranch:ref(),
+    pid = undefined :: pid(),
+    expect = undefined :: undefined | continue,
+    read_body_pid = undefined :: pid() | undefined,
+    read_body_ref = undefined :: reference() | undefined,
+    read_body_timer_ref = undefined :: reference() | undefined,
+    read_body_length = 0 :: non_neg_integer() | infinity | auto,
+    read_body_is_fin = nofin :: nofin | {fin, non_neg_integer()},
+    read_body_buffer = &lt;&lt;&gt;&gt; :: binary(),
+    body_length = 0 :: non_neg_integer(),
+    stream_body_pid = undefined :: pid() | undefined,
+    stream_body_status = normal :: normal | blocking | blocked
+}).</p>
+<p>-spec init(cowboy_stream:streamid(), cowboy_req:req(), cowboy:opts())
+    -&gt; {[{spawn, pid(), timeout()}], #state{}}.</p>
+<hr />
+<h4 id="request_process3"><code>request_process/3</code></h4>
+<p><strong>Arguments</strong>: <code>Req, Env, Middlewares</code></p>
+<p><strong>Description</strong>: Request process.</p>
+<p>%% We add the stacktrace to exit exceptions here in order
+%% to simplify the debugging of errors. The proc_lib library
+%% already adds the stacktrace to other types of exceptions.
+-spec request_process(cowboy_req:req(), cowboy_middleware:env(), [module()]) -&gt; ok.</p>
+<hr />
+<h4 id="resume5"><code>resume/5</code></h4>
+<hr />
+<h4 id="terminate3_4"><code>terminate/3</code></h4>
+<hr />
+<h2 id="cowboy_sup">cowboy_sup</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_22">Exported Functions</h3>
+<h4 id="init1_1"><code>init/1</code></h4>
+<hr />
+<h4 id="start_link0_1"><code>start_link/0</code></h4>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_sup).
+-behaviour(supervisor).</p>
+<p>-export([start_link/0]).
+-export([init/1]).</p>
+<p>-spec start_link() -&gt; {ok, pid()}.</p>
+<hr />
+<h2 id="cowboy_tls">cowboy_tls</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_23">Exported Functions</h3>
+<h4 id="connection_process4_1"><code>connection_process/4</code></h4>
+<hr />
+<h4 id="start_link3_1"><code>start_link/3</code></h4>
+<p><strong>Arguments</strong>: <code>Ref, Transport, Opts</code></p>
+<p><strong>Description</strong>: Ranch 2.
+-spec start_link(ranch:ref(), module(), cowboy:opts()) -&gt; {ok, pid()}.</p>
+<hr />
+<h4 id="start_link4_1"><code>start_link/4</code></h4>
+<p><strong>Arguments</strong>: <code>Ref, Transport, Opts</code></p>
+<p><strong>Description</strong>: Ranch 2.
+-spec start_link(ranch:ref(), module(), cowboy:opts()) -&gt; {ok, pid()}.</p>
+<hr />
+<h2 id="cowboy_tracer_h">cowboy_tracer_h</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_24">Exported Functions</h3>
+<h4 id="data4_5"><code>data/4</code></h4>
+<hr />
+<h4 id="early_error5_5"><code>early_error/5</code></h4>
+<hr />
+<h4 id="info3_5"><code>info/3</code></h4>
+<hr />
+<h4 id="init3_5"><code>init/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Req, Opts</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>-module(cowboy_tracer_h).
+-behavior(cowboy_stream).</p>
+<p>-export([init/3]).
+-export([data/4]).
+-export([info/3]).
+-export([terminate/3]).
+-export([early_error/5]).</p>
+<p>-export([set_trace_patterns/0]).</p>
+<p>-export([tracer_process/3]).
+-export([system_continue/3]).
+-export([system_terminate/4]).
+-export([system_code_change/4]).</p>
+<p>-type match_predicate()
+    :: fun((cowboy_stream:streamid(), cowboy_req:req(), cowboy:opts()) -&gt; boolean()).</p>
+<p>-type tracer_match_specs() :: [match_predicate()
+    | {method, binary()}
+    | {host, binary()}
+    | {path, binary()}
+    | {path_start, binary()}
+    | {header, binary()}
+    | {header, binary(), binary()}
+    | {peer_ip, inet:ip_address()}
+].
+-export_type([tracer_match_specs/0]).</p>
+<p>-type tracer_callback() :: fun((init | terminate | tuple(), any()) -&gt; any()).
+-export_type([tracer_callback/0]).</p>
+<p>-spec init(cowboy_stream:streamid(), cowboy_req:req(), cowboy:opts())
+    -&gt; {cowboy_stream:commands(), any()}.</p>
+<hr />
+<h4 id="set_trace_patterns0"><code>set_trace_patterns/0</code></h4>
+<p><strong>Description</strong>: API.</p>
+<p>%% These trace patterns are most likely not suitable for production.
+-spec set_trace_patterns() -&gt; ok.</p>
+<hr />
+<h4 id="system_code_change4_3"><code>system_code_change/4</code></h4>
+<hr />
+<h4 id="system_continue3_3"><code>system_continue/3</code></h4>
+<p><strong>Arguments</strong>: <code>Parent, _, {Opts, State}</code></p>
+<p><strong>Description</strong>: System callbacks.</p>
+<p>-spec system_continue(pid(), _, {cowboy:opts(), any()}) -&gt; no_return().</p>
+<hr />
+<h4 id="system_terminate4_3"><code>system_terminate/4</code></h4>
+<hr />
+<h4 id="terminate3_5"><code>terminate/3</code></h4>
+<hr />
+<h4 id="tracer_process3"><code>tracer_process/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Req=#{pid := Parent}, Opts=#{tracer_callback := Fun}</code></p>
+<p><strong>Description</strong>: The default flags are probably not suitable for production.
+            Flags = maps:get(tracer_flags, Opts, [
+                send, 'receive', call, return_to,
+                procs, ports, monotonic_timestamp,
+                %% The set_on_spawn flag is necessary to catch events
+                %% from request processes.
+                set_on_spawn
+            ]),
+            erlang:trace(self(), true, [{tracer, TracerPid}|Flags]),
+            ok;
+        _ -&gt;
+            ok
+    end.</p>
+<p>%% Tracer process.</p>
+<p>-spec tracer_process(<em>, </em>, _) -&gt; no_return().</p>
+<hr />
+<h2 id="cowboy_websocket">cowboy_websocket</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_25">Exported Functions</h3>
+<h4 id="is_upgrade_request1"><code>is_upgrade_request/1</code></h4>
+<p><strong>Arguments</strong>: <code>#{version := Version, method := &lt;&lt;"CONNECT"&gt;&gt;, protocol := Protocol})
+        when Version =:= 'HTTP/2'; Version =:= 'HTTP/3' -&gt;
+    &lt;&lt;"websocket"&gt;&gt; =:= cowboy_bstr:to_lower(Protocol);
+is_upgrade_request(Req=#{version := 'HTTP/1.1', method := &lt;&lt;"GET"&gt;&gt;}</code></p>
+<p><strong>Description</strong>: Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<p>%% Cowboy supports versions 7 through 17 of the Websocket drafts.
+%% It also supports RFC6455, the proposed standard for Websocket.
+-module(cowboy_websocket).
+-behaviour(cowboy_sub_protocol).</p>
+<p>-export([is_upgrade_request/1]).
+-export([upgrade/4]).
+-export([upgrade/5]).
+-export([takeover/7]).
+-export([loop/3]).</p>
+<p>-export([system_continue/3]).
+-export([system_terminate/4]).
+-export([system_code_change/4]).</p>
+<p>-type commands() :: [cow_ws:frame()
+    | {active, boolean()}
+    | {deflate, boolean()}
+    | {set_options, map()}
+    | {shutdown_reason, any()}
+].
+-export_type([commands/0]).</p>
+<p>-type call_result(State) :: {commands(), State} | {commands(), State, hibernate}.</p>
+<p>-type deprecated_call_result(State) :: {ok, State}
+    | {ok, State, hibernate}
+    | {reply, cow_ws:frame() | [cow_ws:frame()], State}
+    | {reply, cow_ws:frame() | [cow_ws:frame()], State, hibernate}
+    | {stop, State}.</p>
+<p>-type terminate_reason() :: normal | stop | timeout
+    | remote | {remote, cow_ws:close_code(), binary()}
+    | {error, badencoding | badframe | closed | atom()}
+    | {crash, error | exit | throw, any()}.</p>
+<p>-callback init(Req, any())
+    -&gt; {ok | module(), Req, any()}
+    | {module(), Req, any(), any()}
+    when Req::cowboy_req:req().</p>
+<p>-callback websocket_init(State)
+    -&gt; call_result(State) | deprecated_call_result(State) when State::any().
+-optional_callbacks([websocket_init/1]).</p>
+<p>-callback websocket_handle(ping | pong | {text | binary | ping | pong, binary()}, State)
+    -&gt; call_result(State) | deprecated_call_result(State) when State::any().
+-callback websocket_info(any(), State)
+    -&gt; call_result(State) | deprecated_call_result(State) when State::any().</p>
+<p>-callback terminate(any(), cowboy_req:req(), any()) -&gt; ok.
+-optional_callbacks([terminate/3]).</p>
+<p>-type opts() :: #{
+    active_n =&gt; pos_integer(),
+    compress =&gt; boolean(),
+    deflate_opts =&gt; cow_ws:deflate_opts(),
+    dynamic_buffer =&gt; false | {pos_integer(), pos_integer()},
+    dynamic_buffer_initial_average =&gt; non_neg_integer(),
+    dynamic_buffer_initial_size =&gt; pos_integer(),
+    idle_timeout =&gt; timeout(),
+    max_frame_size =&gt; non_neg_integer() | infinity,
+    req_filter =&gt; fun((cowboy_req:req()) -&gt; map()),
+    validate_utf8 =&gt; boolean()
+}.
+-export_type([opts/0]).</p>
+<p>%% We don't want to reset the idle timeout too often,
+%% so we don't reset it on data. Instead we reset the
+%% number of ticks we have observed. We divide the
+%% timeout value by a value and that value becomes
+%% the number of ticks at which point we can drop
+%% the connection. This value is the number of ticks.
+-define(IDLE_TIMEOUT_TICKS, 10).</p>
+<p>-record(state, {
+    parent :: undefined | pid(),
+    ref :: ranch:ref(),
+    socket = undefined :: inet:socket() | {pid(), cowboy_stream:streamid()} | undefined,
+    transport = undefined :: module() | undefined,
+    opts = #{} :: opts(),
+    active = true :: boolean(),
+    handler :: module(),
+    key = undefined :: undefined | binary(),
+    timeout_ref = undefined :: undefined | reference(),
+    timeout_num = 0 :: 0..?IDLE_TIMEOUT_TICKS,
+    messages = undefined :: undefined | {atom(), atom(), atom()}
+        | {atom(), atom(), atom(), atom()},</p>
+<div class="codehilite"><pre><span></span><code><span class="c">%% Dynamic buffer moving average and current buffer size.</span>
+<span class="n">dynamic_buffer_size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">pos_integer</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span>
+<span class="n">dynamic_buffer_moving_average</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">non_neg_integer</span><span class="p">(),</span>
+
+<span class="n">hibernate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">boolean</span><span class="p">(),</span>
+<span class="n">frag_state</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">undefined</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">cow_ws</span><span class="p">:</span><span class="n">frag_state</span><span class="p">(),</span>
+<span class="n">frag_buffer</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&lt;&lt;&gt;&gt;</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="nb">binary</span><span class="p">(),</span>
+<span class="n">utf8_state</span><span class="w"> </span><span class="s">::</span><span class="w"> </span><span class="s">cow_ws:utf8_state(),</span>
+<span class="n">deflate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">boolean</span><span class="p">(),</span>
+<span class="n">extensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span>#<span class="p">{}</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">map</span><span class="p">(),</span>
+<span class="n">req</span><span class="w"> </span><span class="p">=</span><span class="w"> </span>#<span class="p">{}</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">map</span><span class="p">(),</span>
+<span class="n">shutdown_reason</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">normal</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="nb">any</span><span class="p">()</span>
+</code></pre></div>
+
+<p>}).</p>
+<p>%% Because the HTTP/1.1 and HTTP/2 handshakes are so different,
+%% this function is necessary to figure out whether a request
+%% is trying to upgrade to the Websocket protocol.</p>
+<p>-spec is_upgrade_request(cowboy_req:req()) -&gt; boolean().</p>
+<hr />
+<h4 id="loop3"><code>loop/3</code></h4>
+<hr />
+<h4 id="system_code_change4_4"><code>system_code_change/4</code></h4>
+<p><strong>Arguments</strong>: <code>Misc, _, _, _</code></p>
+<p><strong>Description</strong>: @todo We should exit gracefully, if possible.
+    terminate(State, HandlerState, Reason).</p>
+<p>-spec system_code_change(Misc, <em>, </em>, _)
+    -&gt; {ok, Misc} when Misc::{#state{}, any(), parse_state()}.</p>
+<hr />
+<h4 id="system_continue3_4"><code>system_continue/3</code></h4>
+<p><strong>Arguments</strong>: <code>_, _, {State, HandlerState, ParseState}</code></p>
+<p><strong>Description</strong>: System callbacks.</p>
+<p>-spec system_continue(<em>, </em>, {#state{}, any(), parse_state()}) -&gt; no_return().</p>
+<hr />
+<h4 id="system_terminate4_4"><code>system_terminate/4</code></h4>
+<hr />
+<h4 id="takeover7"><code>takeover/7</code></h4>
+<p><strong>Arguments</strong>: <code>Parent, Ref, Socket, Transport, Opts, Buffer,
+        {State0=#state{opts=WsOpts, handler=Handler, req=Req}, HandlerState}</code></p>
+<p><strong>Description</strong>: @todo We don't want date and server headers.
+    Headers = cowboy_req:response_headers(#{}, Req),
+    Pid ! {{Pid, StreamID}, {switch_protocol, Headers, ?MODULE, {State, HandlerState}}},
+    takeover(Pid, Ref, {Pid, StreamID}, undefined, #{}, &lt;&lt;&gt;&gt;,
+        {State, HandlerState}).</p>
+<p>%% Connection process.</p>
+<p>-record(ps_header, {
+    buffer = &lt;&lt;&gt;&gt; :: binary()
+}).</p>
+<p>-record(ps_payload, {
+    type :: cow_ws:frame_type(),
+    len :: non_neg_integer(),
+    mask_key :: cow_ws:mask_key(),
+    rsv :: cow_ws:rsv(),
+    close_code = undefined :: undefined | cow_ws:close_code(),
+    unmasked = &lt;&lt;&gt;&gt; :: binary(),
+    unmasked_len = 0 :: non_neg_integer(),
+    buffer = &lt;&lt;&gt;&gt; :: binary()
+}).</p>
+<p>-type parse_state() :: #ps_header{} | #ps_payload{}.</p>
+<p>-spec takeover(pid(), ranch:ref(), inet:socket() | {pid(), cowboy_stream:streamid()},
+    module() | undefined, any(), binary(),
+    {#state{}, any()}) -&gt; no_return().</p>
+<hr />
+<h4 id="upgrade4_2"><code>upgrade/4</code></h4>
+<p><strong>Arguments</strong>: <code>Req0=#{version := Version}, Env, Handler, HandlerState, Opts</code></p>
+<p><strong>Description</strong>: @todo Immediately crash if a response has already been sent.</p>
+<hr />
+<h4 id="upgrade5_2"><code>upgrade/5</code></h4>
+<p><strong>Arguments</strong>: <code>Req0=#{version := Version}, Env, Handler, HandlerState, Opts</code></p>
+<p><strong>Description</strong>: @todo Immediately crash if a response has already been sent.</p>
+<hr />
+<h2 id="cowboy_webtransport">cowboy_webtransport</h2>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<h3 id="exported-functions_26">Exported Functions</h3>
+<h4 id="info3_6"><code>info/3</code></h4>
+<p><strong>Arguments</strong>: <code>StreamID, Msg, WTState=#{stream_state := StreamState0}</code></p>
+<p><strong>Description</strong>: cowboy_stream callbacks.
+%%
+%% We shortcut stream handlers but still need to process some events
+%% such as process exiting or termination. We implement the relevant
+%% callbacks here. Note that as far as WebTransport is concerned,
+%% receiving stream data here would be an error therefore the data
+%% callback is not implemented.
+%%
+%% @todo Better type than map() for the cowboy_stream state.</p>
+<p>-spec info(cowboy_stream:streamid(), any(), State)
+    -&gt; {cowboy_stream:commands(), State} when State::map().</p>
+<hr />
+<h4 id="terminate3_6"><code>terminate/3</code></h4>
+<hr />
+<h4 id="upgrade4_3"><code>upgrade/4</code></h4>
+<p><strong>Arguments</strong>: <code>Req=#{version := 'HTTP/3', pid := Pid, streamid := StreamID}, Env, Handler, HandlerState, Opts</code></p>
+<p><strong>Description</strong>: @todo Immediately crash if a response has already been sent.</p>
+<hr />
+<h4 id="upgrade5_3"><code>upgrade/5</code></h4>
+<p><strong>Arguments</strong>: <code>Req=#{version := 'HTTP/3', pid := Pid, streamid := StreamID}, Env, Handler, HandlerState, Opts</code></p>
+<p><strong>Description</strong>: @todo Immediately crash if a response has already been sent.</p>
+<hr />
+    </div>
+</body>
+</html>

@@ -139,7 +139,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 %% not have all the levels we accept we have to do some
 %% mapping to error_logger functions.
 
-**Dependencies**: application, cowboy_http, os, error_logger, cowboy_constraints, cowboy_http3, proplists, quicer, gen_udp, inet, timer, ranch, logger, Logger, maps, cowboy_http2
+**Dependencies**: cowboy_http2, cowboy_constraints, cowboy_http, cowboy_http3
 
 ---
 
@@ -339,7 +339,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 	end,
 	init(Parent, Ref, Socket, Transport, ProxyInfo, Opts, Protocol).
 
-**Dependencies**: Protocol, proc_lib, cowboy, inet, ranch, maps
+**Dependencies**: cowboy
 
 ---
 
@@ -452,7 +452,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 %% to read the file in memory, making this not suitable for
 %% large files.
 
-**Dependencies**: cowboy_stream, file, cow_http_hd, cowboy, zlib, maps, cowboy_req
+**Dependencies**: cowboy, cowboy_stream, cowboy_req
 
 ---
 
@@ -550,8 +550,6 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 			_ -> {ok, R} = reverse(V, C)
 		end
 	end} || {V, C, R} <- Tests].
-
-**Dependencies**: io_lib
 
 ---
 
@@ -681,7 +679,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 - `qvalue_to_iodata(0)` - @todo From cowlib, maybe expose?
 - `build_accept_encoding([{ContentCoding, Q}|Tail])` - @todo Should be added to Cowlib.
 
-**Dependencies**: cowboy_stream, cow_http_hd, cowboy, zlib, cow_deflate, maps, cowboy_req
+**Dependencies**: cowboy, cowboy_stream, cowboy_req
 
 ---
 
@@ -743,7 +741,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -spec execute(Req, Env) -> {ok, Req, Env}
 	when Req::cowboy_req:req(), Env::cowboy_middleware:env().
 
-**Dependencies**: cowboy_middleware, Handler, Mod, cowboy_req
+**Dependencies**: cowboy_req, cowboy_middleware
 
 ---
 
@@ -1288,7 +1286,7 @@ parse_header(<< $\r, $\n, Rest/bits >>, S, Headers)` - Headers.
 
 -spec system_continue(_, _, #state{}) -> ok.
 
-**Dependencies**: Protocol, Transport, binary, sys, cowboy_children, horse, cowboy, cowboy_req, cow_http, cowboy_tracer_h, inet, ranch_transport, cowboy_middleware, maps, cowboy_http2, cowboy_stream, cowboy_metrics_h, proc_lib, cow_http_hd, ranch_proxy_header, ssl, cow_http_te, ranch
+**Dependencies**: cowboy_http2, cowboy_tracer_h, cowboy_req, cowboy_middleware, cowboy_stream, cowboy_children, cowboy, cowboy_metrics_h
 
 ---
 
@@ -1723,7 +1721,7 @@ goaway(State, {goaway, _, Reason, _})` - Terminate a stream or the connection.
 
 -spec system_continue(_, _, {#state{}, binary()}) -> no_return().
 
-**Dependencies**: Transport, sys, cowboy_children, cowboy, cowboy_req, cow_http, cowboy_tracer_h, inet, cowboy_middleware, cow_http2, maps, cowboy_stream, cowboy_metrics_h, proc_lib, cow_http_hd, ranch_proxy_header, cow_http2_machine, ssl, ranch, ranch_transport
+**Dependencies**: cowboy_tracer_h, cowboy_req, cowboy_middleware, cowboy_stream, cowboy_children, cowboy, cowboy_metrics_h
 
 ---
 
@@ -2285,7 +2283,7 @@ webtransport_terminate_session(State=#state{conn=Conn, http3_machine=HTTP3Machin
 	Lingering = [StreamID|lists:sublist(Lingering0, 100 - 1)],
 	State#state{lingering_streams=Lingering}.
 
-**Dependencies**: Transport, cowboy_children, cowboy, cow_http3, cow_http3_machine, cowboy_req, cow_http, cowboy_tracer_h, inet, cowboy_quicer, cowboy_middleware, cow_http2, maps, cowboy_stream, cow_capsule, cowboy_metrics_h, cow_http_hd, cow_http2_machine, ranch, ranch_transport
+**Dependencies**: cowboy_tracer_h, cowboy_req, cowboy_middleware, cowboy_stream, cowboy_quicer, cowboy_children, cowboy, cowboy_metrics_h
 
 ---
 
@@ -2378,7 +2376,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 	-> {ok, Req, Env} | {suspend, ?MODULE, loop, [any()]}
 	when Req::cowboy_req:req(), Env::cowboy_middleware:env().
 
-**Dependencies**: sys, cowboy_children, Handler, cowboy_middleware, cowboy_handler, cowboy_req
+**Dependencies**: cowboy_req, cowboy_middleware, cowboy_handler, cowboy_children
 
 ---
 
@@ -2559,7 +2557,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 	Fun(Metrics),
 	Resp.
 
-**Dependencies**: cowboy_stream, cowboy, ranch, maps, cowboy_req
+**Dependencies**: cowboy, cowboy_stream, cowboy_req
 
 ---
 
@@ -2636,8 +2634,6 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 	-> ok.
 - `shutdown_flag(both)` - @todo Are these flags correct for what we want?
 - `handle({quic, transport_shutdown, _Conn, _Flags})` - QUIC_CONNECTION_EVENT_SHUTDOWN_INITIATED_BY_TRANSPORT
-
-**Dependencies**: cow_http, quicer_nif, public_key, cow_http3, inet, quicer
 
 ---
 
@@ -2987,7 +2983,7 @@ stream_reply(Status = <<"204",_/bits>>, Headers=#{}, Req)` - 204 and 304 respons
 %%
 %% When there is an error at the end, crash.
 
-**Dependencies**: cowboy_stream, cow_qs, binary, file, cowboy_router, cowboy, ranch_proxy_header, cowboy_constraints, inet, cow_sse, ranch, cow_cookie, cow_multipart, maps, cowboy_clock
+**Dependencies**: cowboy_constraints, cowboy_router, cowboy_clock, cowboy_stream, cowboy
 
 ---
 
@@ -3308,7 +3304,7 @@ choose_content_type(Req, State, ContentType, [_Any|Tail])` - The special paramet
 	end,
 	terminate(cowboy_req:reply(StatusCode, Req), State).
 
-**Dependencies**: Mod, cow_http_hd, io_lib, cowboy_handler, Handler, cow_multipart, cowboy_middleware, calendar, cow_iolists, cowboy_clock, cowboy_req
+**Dependencies**: cowboy_clock, cowboy_req, cowboy_middleware, cowboy_handler
 
 ---
 
@@ -3460,7 +3456,7 @@ compile_brackets_split(<< $], Rest/bits >>, Acc, 0)` - Make sure we don't confus
 	[{lists:flatten(io_lib:format("~p", [Rt])),
 		fun() -> Rs = compile(Rt) end} || {Rt, Rs} <- Tests].
 
-**Dependencies**: persistent_term, binary, cowboy_constraints, cowboy, io_lib, cowboy_bstr, cow_uri, cowboy_middleware, cowboy_req
+**Dependencies**: cowboy_constraints, cowboy_req, cowboy_bstr, cowboy_middleware, cowboy
 
 ---
 
@@ -3668,7 +3664,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 	-> {{sendfile, 0, non_neg_integer(), binary()} | binary(), Req, State}
 	when State::state().
 
-**Dependencies**: os, file, calendar, filelib, cow_mimetypes, Module, code, erl_prim_loader, cowboy_req, filename
+**Dependencies**: cowboy_req
 
 ---
 
@@ -3815,7 +3811,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 	list(), error | exit | throw, any(), list())
 	-> {log, error, string(), list()}.
 
-**Dependencies**: cowboy_stream, cowboy, cow_http3, inet, Handler, logger, cow_http2, maps, cowboy_req
+**Dependencies**: cowboy, cowboy_stream, cowboy_req
 
 ---
 
@@ -3908,7 +3904,7 @@ data(StreamID, IsFin, Data, State=#state{read_body_pid=Pid, read_body_ref=Ref,
 %% already adds the stacktrace to other types of exceptions.
 -spec request_process(cowboy_req:req(), cowboy_middleware:env(), [module()]) -> ok.
 
-**Dependencies**: cowboy_stream, cow_http, proc_lib, cowboy, ranch, cowboy_middleware, Middleware, maps, cowboy_req
+**Dependencies**: cowboy, cowboy_stream, cowboy_req, cowboy_middleware
 
 ---
 
@@ -3928,7 +3924,7 @@ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
 ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 
-**Dependencies**: cowboy_middleware, cowboy_req
+**Dependencies**: cowboy_req, cowboy_middleware
 
 ---
 
@@ -3964,7 +3960,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 			init(Parent, Ref, Socket, Transport, ProxyInfo, Opts, Protocol)
 	end.
 
-**Dependencies**: Protocol, proc_lib, cowboy, ssl, ranch, maps
+**Dependencies**: cowboy
 
 ---
 
@@ -4072,7 +4068,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 
 -spec system_continue(pid(), _, {cowboy:opts(), any()}) -> no_return().
 
-**Dependencies**: cowboy_stream, proc_lib, sys, cowboy, inet, maps, cowboy_req
+**Dependencies**: cowboy, cowboy_stream, cowboy_req
 
 ---
 
@@ -4496,7 +4492,7 @@ is_upgrade_request(Req=#{version := 'HTTP/1.1', method := <<"GET">>})` - Copyrig
 -spec system_code_change(Misc, _, _, _)
 	-> {ok, Misc} when Misc::{#state{}, any(), parse_state()}.
 
-**Dependencies**: cowboy_stream, proc_lib, Transport, sys, cowboy_children, base64, cowboy_req, inet, Handler, cowboy_bstr, ranch, cowboy_middleware, crypto, maps, cowboy_handler, cow_ws
+**Dependencies**: cowboy_req, cowboy_middleware, cowboy_bstr, cowboy_handler, cowboy_stream, cowboy_children
 
 ---
 
@@ -4700,7 +4696,7 @@ is_upgrade_request(_)` - Copyright (c) Loïc Hoguin <essen@ninenines.eu>
 -spec info(cowboy_stream:streamid(), any(), State)
 	-> {cowboy_stream:commands(), State} when State::map().
 
-**Dependencies**: cowboy_stream, cow_http, proc_lib, sys, cowboy_children, cow_http3, Handler, cowboy_bstr, cowboy_middleware, cowboy_handler, maps, cowboy_req
+**Dependencies**: cowboy_req, cowboy_bstr, cowboy_middleware, cowboy_handler, cowboy_stream, cowboy_children
 
 ---
 
@@ -4749,56 +4745,6 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -export([init/1]).
 
 -spec start_link() -> {ok, pid()}.
-
----
-
-## Application Modules
-
-### cowboy_app
-
-**File**: `/Users/ddleon/.erlviz/cache/ninenines_cowboy/src/cowboy_app.erl`
-
-**Behaviors**: application
-
-**Description**:
-Copyright (c) Loïc Hoguin <essen@ninenines.eu>
-%% Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-
-**Exported Functions**: start/2, stop/1
-
-**Functions**:
-
-- `start(_, _)` - Copyright (c) Loïc Hoguin <essen@ninenines.eu>
-%%
-%% Permission to use, copy, modify, and/or distribute this software for any
-%% purpose with or without fee is hereby granted, provided that the above
-%% copyright notice and this permission notice appear in all copies.
-%%
-%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
--module(cowboy_app).
--behaviour(application).
-
--export([start/2]).
--export([stop/1]).
-
--spec start(_, _) -> {ok, pid()}.
-
-**Dependencies**: cowboy_sup
 
 ---
 
@@ -4897,7 +4843,55 @@ pad_int(X)` - Following suggestion by MononcQc on #erlounge.
 
 -ifdef(TEST).
 
-**Dependencies**: calendar, ets
+---
+
+## Application Modules
+
+### cowboy_app
+
+**File**: `/Users/ddleon/.erlviz/cache/ninenines_cowboy/src/cowboy_app.erl`
+
+**Behaviors**: application
+
+**Description**:
+Copyright (c) Loïc Hoguin <essen@ninenines.eu>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+
+**Exported Functions**: start/2, stop/1
+
+**Functions**:
+
+- `start(_, _)` - Copyright (c) Loïc Hoguin <essen@ninenines.eu>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+-module(cowboy_app).
+-behaviour(application).
+
+-export([start/2]).
+-export([stop/1]).
+
+-spec start(_, _) -> {ok, pid()}.
+
+**Dependencies**: cowboy_sup
 
 ---
 

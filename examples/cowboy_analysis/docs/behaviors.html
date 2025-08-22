@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behaviors - ErlViz Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #bdc3c7;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="otp-behavior-analysis">OTP Behavior Analysis</h1>
+<p>This project implements the following OTP behaviors:</p>
+<h2 id="application">application</h2>
+<p>Application behavior for implementing OTP applications with start/stop lifecycle management.</p>
+<p><strong>Implementing Modules</strong> (1):</p>
+<h3 id="cowboy_app">cowboy_app</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<p><strong>Callback Functions</strong>:</p>
+<ul>
+<li><code>start(_, _)</code> - Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%%
+%% Permission to use, copy, modify, and/or distribute this software for any
+%% purpose with or without fee is hereby granted, provided that the above
+%% copyright notice and this permission notice appear in all copies.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+%% WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+%% MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+%% ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+%% WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+%% ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+%% OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</li>
+</ul>
+<p>-module(cowboy_app).
+-behaviour(application).</p>
+<p>-export([start/2]).
+-export([stop/1]).</p>
+<p>-spec start(<em>, </em>) -&gt; {ok, pid()}.</p>
+<hr />
+<h2 id="cowboy_middleware">cowboy_middleware</h2>
+<p>Custom behavior: cowboy_middleware</p>
+<p><strong>Implementing Modules</strong> (2):</p>
+<h3 id="cowboy_handler">cowboy_handler</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h3 id="cowboy_router">cowboy_router</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h2 id="cowboy_stream">cowboy_stream</h2>
+<p>Custom behavior: cowboy_stream</p>
+<p><strong>Implementing Modules</strong> (5):</p>
+<h3 id="cowboy_compress_h">cowboy_compress_h</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h3 id="cowboy_decompress_h">cowboy_decompress_h</h3>
+<p>Copyright (c) jdamanalo <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#111;&#115;&#104;&#117;&#97;&#100;&#97;&#118;&#105;&#100;&#46;&#97;&#103;&#117;&#115;&#116;&#105;&#110;&#64;&#109;&#97;&#110;&#97;&#108;&#111;&#46;&#112;&#104;">&#106;&#111;&#115;&#104;&#117;&#97;&#100;&#97;&#118;&#105;&#100;&#46;&#97;&#103;&#117;&#115;&#116;&#105;&#110;&#64;&#109;&#97;&#110;&#97;&#108;&#111;&#46;&#112;&#104;</a>
+Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</p>
+<hr />
+<h3 id="cowboy_metrics_h">cowboy_metrics_h</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h3 id="cowboy_stream_h">cowboy_stream_h</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h3 id="cowboy_tracer_h">cowboy_tracer_h</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h2 id="cowboy_sub_protocol">cowboy_sub_protocol</h2>
+<p>Custom behavior: cowboy_sub_protocol</p>
+<p><strong>Implementing Modules</strong> (3):</p>
+<h3 id="cowboy_loop">cowboy_loop</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h3 id="cowboy_rest">cowboy_rest</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h3 id="cowboy_websocket">cowboy_websocket</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h2 id="gen_server">gen_server</h2>
+<p>Generic server behavior for implementing stateful server processes with synchronous and asynchronous calls.</p>
+<p><strong>Implementing Modules</strong> (1):</p>
+<h3 id="cowboy_clock">cowboy_clock</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<p><strong>Callback Functions</strong>:</p>
+<ul>
+<li><code>init([])</code> - gen_server.</li>
+</ul>
+<p>-spec init([]) -&gt; {ok, #state{}}.
+- <code>handle_info(_Info, State)</code> - Cancel the timer in case an external process sent an update message.
+    _ = erlang:cancel_timer(TRef0, [{async, true}, {info, false}]),
+    T = erlang:universaltime(),
+    B2 = update_rfc1123(B1, Prev, T),
+    ets:insert(?MODULE, {rfc1123, B2}),
+    TRef = erlang:send_after(1000, self(), update),
+    {noreply, #state{universaltime=T, rfc1123=B2, tref=TRef}};</p>
+<hr />
+<h2 id="ranch_protocol">ranch_protocol</h2>
+<p>Ranch protocol behavior for implementing network protocol handlers.</p>
+<p><strong>Implementing Modules</strong> (2):</p>
+<h3 id="cowboy_clear">cowboy_clear</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h3 id="cowboy_tls">cowboy_tls</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+<h2 id="supervisor">supervisor</h2>
+<p>Supervisor behavior for implementing fault-tolerant supervision trees.</p>
+<p><strong>Implementing Modules</strong> (1):</p>
+<h3 id="cowboy_sup">cowboy_sup</h3>
+<p>Copyright (c) Loïc Hoguin <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;">&#101;&#115;&#115;&#101;&#110;&#64;&#110;&#105;&#110;&#101;&#110;&#105;&#110;&#101;&#115;&#46;&#101;&#117;</a>
+%% Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+%% THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</p>
+<hr />
+    </div>
+</body>
+</html>

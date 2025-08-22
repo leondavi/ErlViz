@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication - ErlViz Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #bdc3c7;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="communication-patterns">Communication Patterns</h1>
+<p>This project uses the following communication patterns:</p>
+<h2 id="gen-server">Gen Server</h2>
+<p>Synchronous request-response pattern with state management. Clients send requests and wait for responses.</p>
+<p><strong>Modules using this pattern</strong> (1):</p>
+<ul>
+<li><strong>cowboy_clock</strong>: cowboy_clock handles synchronous gen_server calls</li>
+</ul>
+<hr />
+<h2 id="http-handler">Http Handler</h2>
+<p>HTTP request-response pattern. Handles incoming HTTP requests and returns responses.</p>
+<p><strong>Modules using this pattern</strong> (24):</p>
+<ul>
+<li><strong>cowboy</strong>: cowboy handles HTTP requests</li>
+<li><strong>cowboy_app</strong>: cowboy_app handles HTTP requests</li>
+<li><strong>cowboy_children</strong>: cowboy_children handles HTTP requests</li>
+<li><strong>cowboy_clear</strong>: cowboy_clear handles HTTP requests</li>
+<li><strong>cowboy_compress_h</strong>: cowboy_compress_h handles HTTP requests</li>
+<li><strong>cowboy_decompress_h</strong>: cowboy_decompress_h handles HTTP requests</li>
+<li><strong>cowboy_handler</strong>: cowboy_handler handles HTTP requests</li>
+<li><strong>cowboy_http</strong>: cowboy_http handles HTTP requests</li>
+<li><strong>cowboy_http2</strong>: cowboy_http2 handles HTTP requests</li>
+<li><strong>cowboy_http3</strong>: cowboy_http3 handles HTTP requests</li>
+<li><strong>cowboy_loop</strong>: cowboy_loop handles HTTP requests</li>
+<li><strong>cowboy_metrics_h</strong>: cowboy_metrics_h handles HTTP requests</li>
+<li><strong>cowboy_middleware</strong>: cowboy_middleware handles HTTP requests</li>
+<li><strong>cowboy_req</strong>: cowboy_req handles HTTP requests</li>
+<li><strong>cowboy_rest</strong>: cowboy_rest handles HTTP requests</li>
+<li><strong>cowboy_router</strong>: cowboy_router handles HTTP requests</li>
+<li><strong>cowboy_static</strong>: cowboy_static handles HTTP requests</li>
+<li><strong>cowboy_stream</strong>: cowboy_stream handles HTTP requests</li>
+<li><strong>cowboy_stream_h</strong>: cowboy_stream_h handles HTTP requests</li>
+<li><strong>cowboy_sub_protocol</strong>: cowboy_sub_protocol handles HTTP requests</li>
+<li><strong>cowboy_tls</strong>: cowboy_tls handles HTTP requests</li>
+<li><strong>cowboy_tracer_h</strong>: cowboy_tracer_h handles HTTP requests</li>
+<li><strong>cowboy_websocket</strong>: cowboy_websocket handles HTTP requests</li>
+<li><strong>cowboy_webtransport</strong>: cowboy_webtransport handles HTTP requests</li>
+</ul>
+<hr />
+    </div>
+</body>
+</html>

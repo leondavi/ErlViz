@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dependencies - ErlViz Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #bdc3c7;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="dependencies">Dependencies</h1>
+<h2 id="external-dependencies">External Dependencies</h2>
+<p>This project depends on the following external libraries:</p>
+<ul>
+<li><strong>branch</strong></li>
+<li><strong>cowlib</strong></li>
+<li><strong>git</strong></li>
+<li><strong>ranch</strong></li>
+<li><strong>tag</strong></li>
+</ul>
+<h2 id="internal-module-dependencies">Internal Module Dependencies</h2>
+<p>Dependencies between project modules:</p>
+<ul>
+<li><strong>cowboy</strong> depends on: cowboy_http2, cowboy_constraints, cowboy_http, cowboy_http3</li>
+<li><strong>cowboy_app</strong> depends on: cowboy_sup</li>
+<li><strong>cowboy_children</strong> depends on: cowboy_stream</li>
+<li><strong>cowboy_clear</strong> depends on: cowboy</li>
+<li><strong>cowboy_compress_h</strong> depends on: cowboy, cowboy_stream, cowboy_req</li>
+<li><strong>cowboy_decompress_h</strong> depends on: cowboy, cowboy_stream, cowboy_req</li>
+<li><strong>cowboy_handler</strong> depends on: cowboy_req, cowboy_middleware</li>
+<li><strong>cowboy_http</strong> depends on: cowboy_http2, cowboy_tracer_h, cowboy_req, cowboy_middleware, cowboy_stream, cowboy_children, cowboy, cowboy_metrics_h</li>
+<li><strong>cowboy_http2</strong> depends on: cowboy_tracer_h, cowboy_req, cowboy_middleware, cowboy_stream, cowboy_children, cowboy, cowboy_metrics_h</li>
+<li><strong>cowboy_http3</strong> depends on: cowboy_tracer_h, cowboy_req, cowboy_middleware, cowboy_stream, cowboy_quicer, cowboy_children, cowboy, cowboy_metrics_h</li>
+<li><strong>cowboy_loop</strong> depends on: cowboy_req, cowboy_middleware, cowboy_handler, cowboy_children</li>
+<li><strong>cowboy_metrics_h</strong> depends on: cowboy, cowboy_stream, cowboy_req</li>
+<li><strong>cowboy_middleware</strong> depends on: cowboy_req</li>
+<li><strong>cowboy_req</strong> depends on: cowboy_constraints, cowboy_router, cowboy_clock, cowboy_stream, cowboy</li>
+<li><strong>cowboy_rest</strong> depends on: cowboy_clock, cowboy_req, cowboy_middleware, cowboy_handler</li>
+<li><strong>cowboy_router</strong> depends on: cowboy_constraints, cowboy_req, cowboy_bstr, cowboy_middleware, cowboy</li>
+<li><strong>cowboy_static</strong> depends on: cowboy_req</li>
+<li><strong>cowboy_stream</strong> depends on: cowboy, cowboy_stream, cowboy_req</li>
+<li><strong>cowboy_stream_h</strong> depends on: cowboy, cowboy_stream, cowboy_req, cowboy_middleware</li>
+<li><strong>cowboy_sub_protocol</strong> depends on: cowboy_req, cowboy_middleware</li>
+<li><strong>cowboy_tls</strong> depends on: cowboy</li>
+<li><strong>cowboy_tracer_h</strong> depends on: cowboy, cowboy_stream, cowboy_req</li>
+<li><strong>cowboy_websocket</strong> depends on: cowboy_req, cowboy_middleware, cowboy_bstr, cowboy_handler, cowboy_stream, cowboy_children</li>
+<li><strong>cowboy_webtransport</strong> depends on: cowboy_req, cowboy_bstr, cowboy_middleware, cowboy_handler, cowboy_stream, cowboy_children</li>
+</ul>
+<h2 id="application-dependencies">Application Dependencies</h2>
+    </div>
+</body>
+</html>
