@@ -208,8 +208,17 @@ class ErlangAnalyzer:
                 
         # Extract NIF loading
         if 'erlang:load_nif' in content:
-            nif_matches = re.findall(r'([a-zA-Z_][a-zA-Z0-9_]*)\s*\(\s*\)\s*->\s*erlang:nif_error', content)
+            # Pattern 1: Standard erlang:nif_error pattern
+            nif_matches = re.findall(r'([a-zA-Z_][a-zA-Z0-9_]*)\s*\([^)]*\)\s*->\s*erlang:nif_error', content)
             nif_functions.extend(nif_matches)
+            
+            # Pattern 2: exit(nif_library_not_loaded) pattern (common in some projects)
+            exit_matches = re.findall(r'([a-zA-Z_][a-zA-Z0-9_]*)\s*\([^)]*\)\s*->\s*exit\s*\(\s*nif_library_not_loaded\s*\)', content)
+            nif_functions.extend(exit_matches)
+            
+            # Pattern 3: Functions with just throw/exit/error for NIFs
+            throw_matches = re.findall(r'([a-zA-Z_][a-zA-Z0-9_]*)\s*\([^)]*\)\s*->\s*(?:throw|exit|error)\s*\([^)]*not[_ ]loaded[^)]*\)', content)
+            nif_functions.extend(throw_matches)
             
         # Extract functions with documentation
         function_pattern = r'%%\s*(.*?)\n([a-zA-Z_][a-zA-Z0-9_]*)\s*\((.*?)\)\s*->'
@@ -287,16 +296,37 @@ class ErlangAnalyzer:
         files = {}
         
         # Common NIF source directories
-        src_dirs = ['c_src', 'src_cpp', 'priv', 'src']
+        src_dirs = ['c_src', 'src_cpp', 'src_c', 'cpp_src', 'priv', 'src', 'native']
         
         for src_dir_name in src_dirs:
             src_dir = self.project_path / src_dir_name
             if src_dir.exists():
-                # Look for files matching module name
-                for ext in ['c', 'cpp', 'cc', 'cxx']:
-                    nif_file = src_dir / f"{module_name}.{ext}"
-                    if nif_file.exists():
-                        files[ext if ext == 'c' else 'cpp'] = str(nif_file)
+                # Look for files matching module name or similar patterns
+                patterns = [
+                    f"{module_name}",           # exact match
+                    f"{module_name.lower()}",   # lowercase
+                    f"{module_name.upper()}",   # uppercase  
+                    f"{module_name}NIF",        # with NIF suffix
+                    f"{module_name}_nif",       # with _nif suffix
+                ]
+                
+                for pattern in patterns:
+                    for ext in ['c', 'cpp', 'cc', 'cxx', 'C']:
+                        nif_file = src_dir / f"{pattern}.{ext}"
+                        if nif_file.exists():
+                            files[ext.lower() if ext.lower() == 'c' else 'cpp'] = str(nif_file)
+                
+                # Also look for files recursively in subdirectories
+                for root in src_dir.rglob('*'):
+                    if root.is_file() and root.suffix.lower() in ['.c', '.cpp', '.cc', '.cxx']:
+                        stem = root.stem.lower()
+                        module_lower = module_name.lower()
+                        if (module_lower in stem or stem in module_lower or 
+                            stem.replace('_nif', '') == module_lower or
+                            stem.replace('nif', '') == module_lower):
+                            ext_key = 'c' if root.suffix.lower() == '.c' else 'cpp'
+                            if ext_key not in files:  # Don't overwrite exact matches
+                                files[ext_key] = str(root)
                         
         return files
     

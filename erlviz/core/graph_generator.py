@@ -391,7 +391,7 @@ class ErlangGraphGenerator:
         return str(output_path)
     
     def generate_nif_diagram(self, format: str = 'png', dpi: int = 300) -> str:
-        """Generate NIF implementation diagram"""
+        """Generate enhanced NIF implementation diagram"""
         logger.info("Generating NIF diagram")
         
         nifs = self.data.get('nifs', {})
@@ -400,76 +400,122 @@ class ErlangGraphGenerator:
             return ""
         
         dot = graphviz.Digraph(comment='NIF Implementation Diagram')
-        dot.attr(rankdir='LR', size='12,8', dpi=str(dpi))
+        dot.attr(rankdir='LR', size='16,12', dpi=str(dpi))
         dot.attr('node', fontname='Arial', fontsize='10')
         dot.attr('edge', fontname='Arial', fontsize='8')
+        
+        # Add title
+        dot.attr(label='NIF Implementation Mapping\\nErlang Stubs ↔ Native Functions', 
+                 fontsize='16', fontname='Arial Bold')
         
         for nif_name, nif_info in nifs.items():
             erl_module = self._get_module_from_path(nif_info.get('erl_path', ''))
             
-            # Add Erlang module node
-            if erl_module:
-                dot.node(
-                    erl_module,
-                    label=f"{erl_module}\\n(Erlang)",
-                    shape='ellipse',
-                    fillcolor='lightyellow',
-                    style='filled'
-                )
-            
-            # Add stub functions
-            stub_functions = nif_info.get('stub_functions', [])
-            if stub_functions:
-                stub_label = "\\n".join(stub_functions[:5])  # Limit to first 5
-                if len(stub_functions) > 5:
-                    stub_label += f"\\n... +{len(stub_functions)-5} more"
-                    
-                dot.node(
-                    f"{nif_name}_stubs",
-                    label=f"Stub Functions\\n{stub_label}",
-                    shape='box',
-                    fillcolor='lightgray',
-                    style='filled'
-                )
+            # Create cluster for this NIF module
+            with dot.subgraph(name=f'cluster_{nif_name}') as cluster:
+                cluster.attr(label=f'NIF Module: {nif_name}', style='dashed', color='gray')
                 
+                # Add Erlang module node with file path
                 if erl_module:
-                    dot.edge(erl_module, f"{nif_name}_stubs", label='exports', color='blue')
-            
-            # Add native implementation
-            c_path = nif_info.get('c_path')
-            cpp_path = nif_info.get('cpp_path')
-            
-            if c_path or cpp_path:
-                impl_path = c_path or cpp_path
-                impl_lang = 'C' if c_path else 'C++'
-                impl_name = Path(impl_path).stem
-                
-                native_functions = nif_info.get('native_functions', [])
-                native_label = "\\n".join(native_functions[:5])  # Limit to first 5
-                if len(native_functions) > 5:
-                    native_label += f"\\n... +{len(native_functions)-5} more"
-                
-                dot.node(
-                    f"{nif_name}_impl",
-                    label=f"{impl_name}\\n({impl_lang})\\n{native_label}",
-                    shape='box',
-                    fillcolor='lightcoral',
-                    style='filled'
-                )
-                
-                if stub_functions:
-                    dot.edge(
-                        f"{nif_name}_stubs",
-                        f"{nif_name}_impl",
-                        label='calls native',
-                        color='red',
-                        style='dashed'
+                    erl_path = nif_info.get('erl_path', '')
+                    erl_filename = Path(erl_path).name if erl_path else 'unknown'
+                    
+                    cluster.node(
+                        erl_module,
+                        label=f"{erl_module}\\n({erl_filename})\\nErlang Module",
+                        shape='ellipse',
+                        fillcolor='lightyellow',
+                        style='filled',
+                        fontsize='11'
                     )
+                
+                # Add stub functions node
+                stub_functions = nif_info.get('stub_functions', [])
+                if stub_functions:
+                    stub_label = "Stub Functions:\\n" + "\\n".join([f"• {func}()" for func in stub_functions[:8]])
+                    if len(stub_functions) > 8:
+                        stub_label += f"\\n... +{len(stub_functions)-8} more"
+                        
+                    cluster.node(
+                        f"{nif_name}_stubs",
+                        label=stub_label,
+                        shape='box',
+                        fillcolor='lightblue',
+                        style='filled',
+                        fontsize='10'
+                    )
+                    
+                    if erl_module:
+                        cluster.edge(erl_module, f"{nif_name}_stubs", 
+                                   label='exports', color='blue', style='solid')
+                
+                # Add native implementation nodes
+                c_path = nif_info.get('c_path')
+                cpp_path = nif_info.get('cpp_path')
+                
+                if c_path or cpp_path:
+                    # C implementation
+                    if c_path:
+                        self._add_native_impl_node(cluster, nif_name, c_path, 'C', nif_info)
+                    
+                    # C++ implementation  
+                    if cpp_path:
+                        self._add_native_impl_node(cluster, nif_name, cpp_path, 'C++', nif_info)
+                    
+                    # Connect stubs to implementations
+                    if stub_functions:
+                        impl_node = f"{nif_name}_c_impl" if c_path else f"{nif_name}_cpp_impl"
+                        cluster.edge(
+                            f"{nif_name}_stubs",
+                            impl_node,
+                            label='calls native',
+                            color='red',
+                            style='dashed',
+                            fontsize='9'
+                        )
         
         output_path = self.output_dir / f'nif_diagram.{format}'
         dot.render(str(output_path.with_suffix('')), format=format, cleanup=True)
         
         return str(output_path)
+    
+    def _add_native_impl_node(self, graph, nif_name: str, impl_path: str, lang: str, nif_info: dict):
+        """Add a native implementation node to the graph"""
+        impl_filename = Path(impl_path).name
+        impl_name = Path(impl_path).stem
+        
+        native_functions = nif_info.get('native_functions', [])
+        
+        # Create detailed label
+        impl_label = f"{impl_name}\\n({impl_filename})\\n{lang} Implementation"
+        
+        if native_functions:
+            impl_label += "\\n\\nNative Functions:"
+            func_list = [f"• {func}" for func in native_functions[:6]]
+            impl_label += "\\n" + "\\n".join(func_list)
+            if len(native_functions) > 6:
+                impl_label += f"\\n... +{len(native_functions)-6} more"
+        else:
+            impl_label += "\\n\\n(Functions not detected)"
+        
+        # Add file path info
+        if len(impl_path) > 50:
+            short_path = "..." + impl_path[-47:]
+        else:
+            short_path = impl_path
+        impl_label += f"\\n\\nPath: {short_path}"
+        
+        node_name = f"{nif_name}_{lang.lower()}_impl"
+        color = 'lightcoral' if lang == 'C' else 'lightgreen'
+        
+        graph.node(
+            node_name,
+            label=impl_label,
+            shape='box',
+            fillcolor=color,
+            style='filled',
+            fontsize='9'
+        )
     
     def generate_all_graphs(self, format: str = 'png', dpi: int = 300) -> Dict[str, str]:
         """Generate all available graphs"""
